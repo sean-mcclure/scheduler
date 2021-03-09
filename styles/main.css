@@ -1,0 +1,13 @@
+.calendar_calendar_layout_cells:hover {
+    background: #b33939;
+}
+
+.calendar_calendar_layout_cells {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.calendar_today_date {
+    font-family: Oswald;
+    font-size: 30px;
+}
