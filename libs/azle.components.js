@@ -1279,37 +1279,51 @@ az.components.utility.fill_calendar = function(options, month, year) {
                 var use_iterations = Object.values(days_per_month)[az.components.utility.months.indexOf(month)]
             }
             az.call_multiple({
-                "iterations": use_iterations,
+                "iterations": use_iterations + 8, // adding 8 to account for header
                 "function": function(elem, index) {
+                    if( index < use_iterations) {
                     az.add_text(options.this_class + "_calendar_layout_cells", index + 8 + start_on_calendar.getDay(), {
                         "this_class": options.this_class + "_show_day_number",
                         "text": index + 1
                     })
                     az.style_text(options.this_class + "_show_day_number", index + 1, {
                         "color": "whitesmoke",
-                        "align": "center"
+                        "align": "center",
+                        "pointer-events" : "none"
                     })
+                    }
                     if (options.hasOwnProperty("on_click_cell")) {
-                        az.add_event(options.this_class + "_show_day_number", index + 1, {
+                        az.add_event(options.this_class + "_calendar_layout_cells", index + 1, {
                             "type": "click",
                             "function": function(this_id) {
                                 az.call_callback(options.on_click_cell(this_id))
                             }
                         })
                     }
+                    if(index === new Date().getDate()) {
+                        setTimeout(function() {
+                        if(az.grab_value("calendar_today_date", 1).includes(az.components.utility.months[new Date().getMonth()])) {
+                            az.style_html(options.this_class + "_calendar_layout_cells", index + 8, {
+                                "background" : "#ccae62"
+                            })
+                        }
+                    }, 200)
+                    }
+                    /*
                     if (typeof(az.components.selected_month_datetime[options.this_class]) !== "undefined") {
                         if ((new Date().getDay() - 1) === (index + 1) && (az.components.utility.months.indexOf(month) === new Date().getMonth())) {
                             az.style_text(options.this_class + "_show_day_number", index + 1, {
-                                "background": "#B73637"
+                                "background": "blue" // today's day
                             })
                         }
                     } else {
                         if ((new Date().getDay() - 1) === (index + 1) && az.components.utility.months.indexOf(month) == (new Date().getMonth())) {
                             az.style_text(options.this_class + "_show_day_number", index + 1, {
-                                "background": "#B73637"
+                                "background": "blue" // today's day
                             })
                         }
                     }
+                    */
                     if (options.hasOwnProperty("only_past_dates")) {
                         if (options.only_past_dates) {
                             if (az.components.selected_month_datetime[options.this_class] <= new Date()) {
