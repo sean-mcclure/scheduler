@@ -4,6 +4,7 @@
     
 <head>
     <script src='https://azlejs.com/v2/azle.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/3.1.0/parse.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
     
@@ -17,10 +18,16 @@ create_azle(function() {
 
     az.load_scripts([
         "libs/azle.components.js",
-        "scripts/prepare.js"
+        "scripts/prepare.js",
+        "scripts/parse.js"
     ])
 
 
 })   
 
+</script>
+
+<script>
+    Parse.initialize("YrZRq6N95TalZ58vwVEfqfXTI2b1d08wPPRyOvxb", "RdCkW9kiRfudad46zpA2RqiptYK4Il0o1Ea1ZXWX");
+    Parse.serverURL = "https://parseapi.back4app.com/";
 </script>
