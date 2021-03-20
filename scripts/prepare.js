@@ -24,7 +24,7 @@ az.call_once_satisfied({
             this_class: "calendar",
             height: "80vh",
             on_click_cell: function(this_id) {
-                // $("#" + this_id).css("background", "pink")
+                az.hold_value.clicked_cell_id = this_id;
                 az.add_modal({
                     "this_class": "pop_schedule",
                     "content_class": "pop_schedule_content"
@@ -139,8 +139,10 @@ az.call_once_satisfied({
                         })
                         if (az.hold_value.clicked_instance === 1) {
                             var pass_user = "Kasandra"
+                            var this_avater = "img/girl.png"
                         } else {
                             var pass_user = "Sean"
+                            var this_avater = "img/boy.png"
                         }
                         save_to_parse({
                             user: pass_user,
@@ -149,8 +151,47 @@ az.call_once_satisfied({
                         })
                         setTimeout(function() {
                             az.close_overlay("pop_schedule", 1)
+                            var target_index_of_avatar_layout = $(".avatar_layout").eq(az.get_target_instance("layout_Nipvmf6elDEq11U") - 1).find(".add_avatar").length + 1;
+                            var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                                "key" : "store_layout_id",
+                            })
+                            az.add_image("avatar_layout_cells", az.get_target_instance(target_id)*6 - (6 - target_index_of_avatar_layout), {
+                                "this_class": "add_avatar",
+                                "image_path": this_avater
+                            })
+                            az.all_style_image("add_avatar", {
+                                "width": "30px",
+                                "align" : "center"
+                            })
                         }, 1000)
                     }
+                })
+            }
+        })
+    }
+})
+az.call_once_satisfied({
+    "condition": "az.number_of_elements('calendar_calendar_layout_cells') > 30",
+    "function": function() {
+        az.call_multiple({
+            "iterations": az.number_of_elements("calendar_calendar_layout_cells"),
+            "function": function(dummy, index) {
+                var layout_id = "layout_" + az.makeid()
+                az.add_layout("calendar_calendar_layout_cells", index + 1, {
+                    "this_class": "avatar_layout",
+                    "this_id" : layout_id,
+                    "row_class": "avatar_layout_rows",
+                    "cell_class": "avatar_layout_cells",
+                    "number_of_rows": 1,
+                    "number_of_columns": 6
+                })
+                az.all_style_layout("avatar_layout", {
+                    "height": "auto",
+                    "width": "100%"
+                })
+                az.store_data("calendar_calendar_layout_cells", index + 1, {
+                    "key" : "store_layout_id",
+                    "value" : layout_id
                 })
             }
         })
