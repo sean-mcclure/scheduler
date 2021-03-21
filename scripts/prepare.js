@@ -153,8 +153,20 @@ az.call_once_satisfied({
                             az.close_overlay("pop_schedule", 1)
                             var target_index_of_avatar_layout = $(".avatar_layout").eq(az.get_target_instance("layout_Nipvmf6elDEq11U") - 1).find(".add_avatar").length + 1;
                             var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                                "key" : "store_layout_id",
+                                "key": "store_layout_id",
                             })
+                                                        var ind = get_last_colored_index("avatar_layout_" + target_id)
+
+                            if(pass_user !== "Sean") {
+                            az.style_html("avatar_layout_" + target_id + "_cells", ind + 1, {
+                                "background": "#ff5252"
+                            })
+                        } else {
+                            az.style_html("avatar_layout_" + target_id + "_cells", ind + 13, {
+                                "background": "#ff5252"
+                            })
+                        }
+                            /*
                             az.add_image("avatar_layout_cells", az.get_target_instance(target_id)*6 - (6 - target_index_of_avatar_layout), {
                                 "this_class": "add_avatar",
                                 "image_path": this_avater
@@ -163,6 +175,7 @@ az.call_once_satisfied({
                                 "width": "30px",
                                 "align" : "center"
                             })
+                            */
                         }, 1000)
                     }
                 })
@@ -178,22 +191,37 @@ az.call_once_satisfied({
             "function": function(dummy, index) {
                 var layout_id = "layout_" + az.makeid()
                 az.add_layout("calendar_calendar_layout_cells", index + 1, {
-                    "this_class": "avatar_layout",
-                    "this_id" : layout_id,
-                    "row_class": "avatar_layout_rows",
-                    "cell_class": "avatar_layout_cells",
-                    "number_of_rows": 1,
-                    "number_of_columns": 6
+                    "this_class": "avatar_layout_" + layout_id,
+                    "this_id": layout_id,
+                    "row_class": "avatar_layout_" + layout_id + "_rows",
+                    "cell_class": "avatar_layout_" + layout_id + "_cells",
+                    "number_of_rows": 2,
+                    "number_of_columns": 12
                 })
-                az.all_style_layout("avatar_layout", {
-                    "height": "auto",
+                az.all_style_layout("avatar_layout_" + layout_id, {
+                    "height": "20px",
                     "width": "100%"
                 })
                 az.store_data("calendar_calendar_layout_cells", index + 1, {
-                    "key" : "store_layout_id",
-                    "value" : layout_id
+                    "key": "store_layout_id",
+                    "value": layout_id
                 })
             }
         })
     }
 })
+
+function get_last_colored_index(layout_id) {
+    var res;
+    var cnt = 0;
+    $("." + layout_id).children().find("td").each(function(index) {
+        cnt++;
+        if ($(this).css("background-color") != "rgba(0, 0, 0, 0)") {
+            res = cnt;
+        }
+    })
+    if(typeof(res) === "undefined") {
+        res = 0
+    }
+    return (res)
+}
