@@ -10,3 +10,16 @@ function save_to_parse(data) {
     });
 }
 
+async function fetch_from_parse() {
+    var events_res = Parse.Object.extend("events");
+    var query = new Parse.Query(events_res);
+    //query.equalTo("objectId", az.hold_value.user.id);
+    const res = await query.find();
+    az.hold_value.fetch_results = res;
+}
+
+/*
+ az.hold_value.fetch_results.forEach(function(obj){
+    console.log(obj.attributes.event)
+ })
+ */

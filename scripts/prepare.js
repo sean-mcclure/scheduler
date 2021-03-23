@@ -74,6 +74,7 @@ az.call_once_satisfied({
             height: "80vh",
             on_click_cell: function(this_id) {
                 az.hold_value.clicked_cell_id = this_id;
+                var day_number = az.get_target_instance(az.hold_value.clicked_cell_id) - 8;
                 az.add_modal({
                     "this_class": "pop_schedule",
                     "content_class": "pop_schedule_content"
@@ -130,10 +131,6 @@ az.call_once_satisfied({
                     "cursor": "pointer",
                     "outline": 0
                 })
-                az.style_image("who_button", 1, {
-                    "background": "#ffda79",
-                    "border": "1px solid black"
-                })
                 az.all_add_event("who_button", {
                     "type": "click",
                     "function": function(this_id) {
@@ -148,6 +145,9 @@ az.call_once_satisfied({
                         })
                     }
                 })
+                setTimeout(function() {
+                    az.click_element("who_button", 1)
+                }, 300)
                 az.add_input("pop_schedule_content", 1, {
                     "this_class": "event_name",
                     "placeholder": "event name..."
@@ -183,40 +183,60 @@ az.call_once_satisfied({
                 az.add_event("add_event_button", 1, {
                     "type": "click",
                     "function": function() {
-                        az.animate_element("add_event_button", 1, {
-                            "type": "spin"
-                        })
-                        if (az.hold_value.clicked_instance === 1) {
-                            var pass_user = "Kasandra"
-                            var this_avater = "img/girl.png"
-                        } else {
-                            var pass_user = "Sean"
-                            var this_avater = "img/boy.png"
-                        }
-                        save_to_parse({
-                            user: pass_user,
-                            event: az.grab_value("event_name", 1),
-                            date_time: az.grab_value("pick_time", 1)
-                        })
-                        setTimeout(function() {
-                            az.close_overlay("pop_schedule", 1)
-                            var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                                "key": "store_layout_id",
+                        if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
+                            az.animate_element("add_event_button", 1, {
+                                "type": "spin"
                             })
-                            if (pass_user !== "Sean") {
-                                az.style_html("avatar_layout_" + target_id + "_cells", Number(az.get_everything_before(az.grab_value("pick_time", 1), ":")), {
-                                    "background": "#33d9b2"
+                            if (az.hold_value.clicked_instance === 1) {
+                                var pass_user = "Kasandra"
+                                var this_avater = "img/girl.png"
+                            } else {
+                                var pass_user = "Sean"
+                                var this_avater = "img/boy.png"
+                            }
+                            save_to_parse({
+                                user: pass_user,
+                                event: az.grab_value("event_name", 1),
+                                date_time: prepare_date_time(day_number, az.grab_value("pick_time", 1))
+                            })
+                            setTimeout(function() {
+                                az.close_overlay("pop_schedule", 1)
+                                var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                                    "key": "store_layout_id",
                                 })
-                                az.add_tooltip("avatar_layout_" + target_id + "_cells", Number(az.get_everything_before(az.grab_value("pick_time", 1), ":")), {
-                                    "this_class" : "my_tooltip",
-                                    "text" : az.grab_value("pick_time", 1)
+                                if (pass_user !== "Sean") {
+                                    az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                                        "background": "#33d9b2"
+                                    })
+                                    az.add_tooltip("avatar_layout_" + target_id + "_cells", 1, {
+                                        "this_class": "my_tooltip",
+                                        "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
+                                    })
+                                } else {
+                                    az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                                        "background": "#34ace0"
+                                    })
+                                    az.add_tooltip("avatar_layout_" + target_id + "_cells", 2, {
+                                        "this_class": "my_tooltip",
+                                        "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
+                                    })
+                                    az.style_tooltip("my_tooltip", 1, {
+                                        "background": "#141414",
+                                        "border": "1px solid gold"
+                                    })
+                                }
+                            }, 1000)
+                        } else {
+                            if (az.grab_value("pick_time", 1) === "") {
+                                az.animate_element("pick_time", 1, {
+                                    "type": "rubberBand"
                                 })
                             } else {
-                                az.style_html("avatar_layout_" + target_id + "_cells", Number(az.get_everything_before(az.grab_value("pick_time", 1), ":")) + 24, {
-                                    "background": "#34ace0"
+                                az.animate_element("event_name", 1, {
+                                    "type": "rubberBand"
                                 })
                             }
-                        }, 1000)
+                        }
                     }
                 })
             }
@@ -238,18 +258,23 @@ function set_overlaps() {
                             "this_id": layout_id,
                             "row_class": "avatar_layout_" + layout_id + "_rows",
                             "cell_class": "avatar_layout_" + layout_id + "_cells",
-                            "number_of_rows": 2,
-                            "number_of_columns": 24
+                            "number_of_rows": 1,
+                            "number_of_columns": 2
                         })
                         az.all_style_layout("avatar_layout_" + layout_id, {
                             "height": "20px",
                             "width": "100%",
                             "margin-top": "10px",
-                            "border": 0
+                            "align": "center",
+                            "border": 1
                         })
                         az.store_data("calendar_calendar_layout_cells", index + 1, {
                             "key": "store_layout_id",
                             "value": layout_id
+                        })
+                        az.store_data("calendar_calendar_layout_cells", index + 1, {
+                            "key": "store_date_number",
+                            "value": $(".calendar_calendar_layout_cells").eq(index).text()
                         })
                     }
                 }
@@ -260,3 +285,11 @@ function set_overlaps() {
 setTimeout(function() {
     set_overlaps()
 }, 1000)
+
+function prepare_date_time(day_number, pick_time) {
+    const month_year = az.grab_value("calendar_today_date", 1).split(",");
+    const month = month_year[0].trim();
+    const year = month_year[1].trim();
+    var fin = month + " " + day_number + ", " + year + " : " + pick_time;
+    return (fin)
+}
