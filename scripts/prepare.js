@@ -87,6 +87,7 @@ az.call_once_satisfied({
                     "box-shadow": "2px 2px 100px #141414",
                     "border": "4px solid #141414"
                 })
+                if(!az.hold_value.event_clicked) {
                 az.add_text("pop_schedule_content", 1, {
                     "this_class": "schedular_title",
                     "text": "ADD EVENT"
@@ -239,12 +240,30 @@ az.call_once_satisfied({
                         }
                     }
                 })
+            } else {
+                alert("different modal content")
+            }
+            }
+
+        })
+        az.add_event("calendar_forward_icon", 1, {
+            "type" : "click",
+            "function" : function() {
+                 fetch_and_loop()
+                 set_inner_layouts()
+            }
+        })
+        az.add_event("calendar_back_icon", 1, {
+            "type" : "click",
+            "function" : function() {
+                 fetch_and_loop()
+                 set_inner_layouts()
             }
         })
     }
 })
 
-function set_overlaps() {
+function set_inner_layouts() {
     az.call_once_satisfied({
         "condition": "az.number_of_elements('calendar_calendar_layout_cells') > 30",
         "function": function() {
@@ -266,7 +285,7 @@ function set_overlaps() {
                             "width": "100%",
                             "margin-top": "10px",
                             "align": "center",
-                            "border": 1
+                            "border": 0
                         })
                         az.store_data("calendar_calendar_layout_cells", index + 1, {
                             "key": "store_layout_id",
@@ -279,11 +298,14 @@ function set_overlaps() {
                     }
                 }
             })
+            setTimeout(function() {
+                fetch_and_loop()
+            }, 2000)
         }
     })
 }
 setTimeout(function() {
-    set_overlaps()
+    set_inner_layouts()
 }, 1000)
 
 function prepare_date_time(day_number, pick_time) {
@@ -292,4 +314,86 @@ function prepare_date_time(day_number, pick_time) {
     const year = month_year[1].trim();
     var fin = month + " " + day_number + ", " + year + " : " + pick_time;
     return (fin)
+}
+
+
+function fetch_and_loop() {
+    fetch_from_parse()
+    az.call_once_satisfied({
+            "condition": "typeof(az.hold_value.fetch_results) !== 'undefined'",
+            "function": function() {
+                az.hold_value.fetch_results.forEach(function(obj) {
+                    var this_event = JSON.parse(obj.attributes.event);
+
+                    // event month and year
+                    var this_month = this_event.date_time.split(" ")[0]
+                    var this_year = this_event.date_time.split(" ")[2]
+
+                    // currently viewed month and year
+                    var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
+                    var calendar_month = calendar_month_year[0].trim();
+                    var calendar_year = calendar_month_year[1].trim();
+
+                    if(this_month === calendar_month && this_year === calendar_year) {
+
+                    if (this_event.user === "Kasandra") {
+                        var pass_user = "Kasandra"
+                        var this_avater = "img/girl.png"
+                    } else {
+                        var pass_user = "Sean"
+                        var this_avater = "img/boy.png"
+                    }
+                    var use_instance = Number(this_event.date_time.split(" ")[1].replace(",", "")) + 8;
+                    var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, { // the set_inner_layouts ids are stored on each calendar cell 
+                        "key": "store_layout_id",
+                    })
+                    if (pass_user !== "Sean") {
+                        az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                            "background": "#33d9b2"
+                        })
+                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 1, {
+                            "this_class": "my_tooltip",
+                            "text": this_event.event.slice(0, 10) + "..."
+                        })
+                        az.add_event("avatar_layout_" + target_id + "_cells", 1, {
+                            "type" : "click",
+                            "once" : true,
+                            "function" : function(this_id) {
+                                az.hold_value.event_clicked = true;
+                                setTimeout(function() {
+                                    az.hold_value.event_clicked = false;
+                                }, 500)
+                            }
+                        })
+                    } else {
+                        az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                            "background": "#34ace0"
+                        })
+                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 2, {
+                            "this_class": "my_tooltip",
+                            "text": this_event.event.slice(0, 10) + "..."
+                        })
+                        az.style_tooltip("my_tooltip", 1, {
+                            "background": "#141414",
+                            "border": "1px solid gold"
+                        })
+                        az.add_event("avatar_layout_" + target_id + "_cells", 2, {
+                            "type" : "click",
+                            "once" : true,
+                            "function" : function(this_id) {
+                                az.hold_value.event_clicked = true;
+                                setTimeout(function() {
+                                    az.hold_value.event_clicked = false;
+                                }, 500)
+                            }
+                        })
+                    }
+                    
+                }
+            })
+        }
+    })
+    setTimeout(function() {
+        az.hold_value.fetch_results = undefined;
+    }, 2000)
 }
