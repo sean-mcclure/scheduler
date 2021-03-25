@@ -87,177 +87,208 @@ az.call_once_satisfied({
                     "box-shadow": "2px 2px 100px #141414",
                     "border": "4px solid #141414"
                 })
-                if(!az.hold_value.event_clicked) {
-                az.add_text("pop_schedule_content", 1, {
-                    "this_class": "schedular_title",
-                    "text": "ADD EVENT"
-                })
-                az.style_text("schedular_title", 1, {
-                    "align": "center",
-                    "color": "#141414",
-                    "font-family": "Oswald",
-                    "font-size": "26px",
-                    "margin-bottom": "10px"
-                })
-                az.add_layout("pop_schedule_content", 1, {
-                    "this_class": "my_layout",
-                    "row_class": "my_layout_rows",
-                    "cell_class": "my_layout_cells",
-                    "number_of_rows": 1,
-                    "number_of_columns": 2
-                })
-                az.style_layout("my_layout", 1, {
-                    "height": "auto",
-                    "width": "200px",
-                    "align": "center",
-                    "margin-bottom": "10px",
-                    "border": 0
-                })
-                az.add_image("my_layout_cells", 1, {
-                    "this_class": "who_button",
-                    "image_path": "img/girl.png"
-                })
-                az.add_image("my_layout_cells", 2, {
-                    "this_class": "who_button",
-                    "image_path": "img/boy.png"
-                })
-                az.all_style_image("who_button", {
-                    "align": "center",
-                    "width": "50px",
-                    "height": "50px",
-                    "background": "#d1ccc0",
-                    "border-radius": "4px",
-                    "padding": "5px",
-                    "color": "#141414",
-                    "cursor": "pointer",
-                    "outline": 0
-                })
-                az.all_add_event("who_button", {
-                    "type": "click",
-                    "function": function(this_id) {
-                        az.hold_value.clicked_instance = az.get_target_instance(this_id)
-                        az.all_style_button("who_button", {
-                            "background": "#d1ccc0",
-                            "border": "0px solid black"
-                        })
-                        az.style_button("who_button", az.get_target_instance(this_id), {
-                            "background": "#ffda79",
-                            "border": "1px solid black"
-                        })
-                    }
-                })
-                setTimeout(function() {
-                    az.click_element("who_button", 1)
-                }, 300)
-                az.add_input("pop_schedule_content", 1, {
-                    "this_class": "event_name",
-                    "placeholder": "event name..."
-                })
-                az.style_input("event_name", 1, {
-                    "margin-bottom": "30px",
-                    "font-family": "Oswald"
-                })
-                az.all_style_input("event_name", {
-                    "align": "center",
-                    "border": "none",
-                    "margin-top": "10px",
-                    "background": "#ffda79",
-                    "width": "90%",
-                    "outline": 0
-                })
-                az.add_html("pop_schedule_content", 1, {
-                    "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
-                })
-                az.style_html("pick_time", 1, {
-                    "align": "center",
-                    "margin-top": "-10px"
-                })
-                az.add_button("pop_schedule_content", 1, {
-                    "this_class": "add_event_button",
-                    "text": "ADD"
-                })
-                az.style_button("add_event_button", 1, {
-                    "align": "center",
-                    "margin-top": "20px",
-                    "background": "#218c74"
-                })
-                az.add_event("add_event_button", 1, {
-                    "type": "click",
-                    "function": function() {
-                        if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
-                            az.animate_element("add_event_button", 1, {
-                                "type": "spin"
+                if (!az.hold_value.event_clicked) {
+                    az.add_text("pop_schedule_content", 1, {
+                        "this_class": "schedular_title",
+                        "text": "ADD EVENT"
+                    })
+                    az.style_text("schedular_title", 1, {
+                        "align": "center",
+                        "color": "#141414",
+                        "font-family": "Oswald",
+                        "font-size": "26px",
+                        "margin-bottom": "10px"
+                    })
+                    az.add_layout("pop_schedule_content", 1, {
+                        "this_class": "my_layout",
+                        "row_class": "my_layout_rows",
+                        "cell_class": "my_layout_cells",
+                        "number_of_rows": 1,
+                        "number_of_columns": 2
+                    })
+                    az.style_layout("my_layout", 1, {
+                        "height": "auto",
+                        "width": "200px",
+                        "align": "center",
+                        "margin-bottom": "10px",
+                        "border": 0
+                    })
+                    az.add_image("my_layout_cells", 1, {
+                        "this_class": "who_button",
+                        "image_path": "img/girl.png"
+                    })
+                    az.add_image("my_layout_cells", 2, {
+                        "this_class": "who_button",
+                        "image_path": "img/boy.png"
+                    })
+                    az.all_style_image("who_button", {
+                        "align": "center",
+                        "width": "50px",
+                        "height": "50px",
+                        "background": "#d1ccc0",
+                        "border-radius": "4px",
+                        "padding": "5px",
+                        "color": "#141414",
+                        "cursor": "pointer",
+                        "outline": 0
+                    })
+                    az.all_add_event("who_button", {
+                        "type": "click",
+                        "function": function(this_id) {
+                            az.hold_value.clicked_instance = az.get_target_instance(this_id)
+                            az.all_style_button("who_button", {
+                                "background": "#d1ccc0",
+                                "border": "0px solid black"
                             })
-                            if (az.hold_value.clicked_instance === 1) {
-                                var pass_user = "Kasandra"
-                                var this_avater = "img/girl.png"
-                            } else {
-                                var pass_user = "Sean"
-                                var this_avater = "img/boy.png"
-                            }
-                            save_to_parse({
-                                user: pass_user,
-                                event: az.grab_value("event_name", 1),
-                                date_time: prepare_date_time(day_number, az.grab_value("pick_time", 1))
+                            az.style_button("who_button", az.get_target_instance(this_id), {
+                                "background": "#ffda79",
+                                "border": "1px solid black"
                             })
-                            setTimeout(function() {
-                                az.close_overlay("pop_schedule", 1)
-                                var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                                    "key": "store_layout_id",
+                        }
+                    })
+                    setTimeout(function() {
+                        az.click_element("who_button", 1)
+                    }, 300)
+                    az.add_input("pop_schedule_content", 1, {
+                        "this_class": "event_name",
+                        "placeholder": "event name..."
+                    })
+                    az.style_input("event_name", 1, {
+                        "margin-bottom": "30px",
+                        "font-family": "Oswald"
+                    })
+                    az.all_style_input("event_name", {
+                        "align": "center",
+                        "border": "none",
+                        "margin-top": "10px",
+                        "background": "#ffda79",
+                        "width": "90%",
+                        "outline": 0
+                    })
+                    az.add_html("pop_schedule_content", 1, {
+                        "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
+                    })
+                    az.style_html("pick_time", 1, {
+                        "align": "center",
+                        "margin-top": "-10px"
+                    })
+                    az.add_button("pop_schedule_content", 1, {
+                        "this_class": "add_event_button",
+                        "text": "ADD"
+                    })
+                    az.style_button("add_event_button", 1, {
+                        "align": "center",
+                        "margin-top": "20px",
+                        "background": "#218c74"
+                    })
+                    az.add_event("add_event_button", 1, {
+                        "type": "click",
+                        "function": function() {
+                            if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
+                                az.animate_element("add_event_button", 1, {
+                                    "type": "spin"
                                 })
-                                if (pass_user !== "Sean") {
-                                    az.style_html("avatar_layout_" + target_id + "_cells", 1, {
-                                        "background": "#33d9b2"
+                                if (az.hold_value.clicked_instance === 1) {
+                                    var pass_user = "Kasandra"
+                                    var this_avater = "img/girl.png"
+                                } else {
+                                    var pass_user = "Sean"
+                                    var this_avater = "img/boy.png"
+                                }
+                                save_to_parse({
+                                    user: pass_user,
+                                    event: az.grab_value("event_name", 1),
+                                    date_time: prepare_date_time(day_number, az.grab_value("pick_time", 1))
+                                })
+                                setTimeout(function() {
+                                    az.close_overlay("pop_schedule", 1)
+                                    var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                                        "key": "store_layout_id",
                                     })
-                                    az.add_tooltip("avatar_layout_" + target_id + "_cells", 1, {
-                                        "this_class": "my_tooltip",
-                                        "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
+                                    if (pass_user !== "Sean") {
+                                        az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                                            "background": "#33d9b2"
+                                        })
+                                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 1, {
+                                            "this_class": "my_tooltip",
+                                            "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
+                                        })
+                                    } else {
+                                        az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                                            "background": "#34ace0"
+                                        })
+                                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 2, {
+                                            "this_class": "my_tooltip",
+                                            "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
+                                        })
+                                        az.style_tooltip("my_tooltip", 1, {
+                                            "background": "#141414",
+                                            "border": "1px solid gold"
+                                        })
+                                    }
+                                }, 1000)
+                            } else {
+                                if (az.grab_value("pick_time", 1) === "") {
+                                    az.animate_element("pick_time", 1, {
+                                        "type": "rubberBand"
                                     })
                                 } else {
-                                    az.style_html("avatar_layout_" + target_id + "_cells", 2, {
-                                        "background": "#34ace0"
-                                    })
-                                    az.add_tooltip("avatar_layout_" + target_id + "_cells", 2, {
-                                        "this_class": "my_tooltip",
-                                        "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
-                                    })
-                                    az.style_tooltip("my_tooltip", 1, {
-                                        "background": "#141414",
-                                        "border": "1px solid gold"
+                                    az.animate_element("event_name", 1, {
+                                        "type": "rubberBand"
                                     })
                                 }
-                            }, 1000)
-                        } else {
-                            if (az.grab_value("pick_time", 1) === "") {
-                                az.animate_element("pick_time", 1, {
-                                    "type": "rubberBand"
-                                })
-                            } else {
-                                az.animate_element("event_name", 1, {
-                                    "type": "rubberBand"
-                                })
                             }
                         }
-                    }
-                })
-            } else {
-                alert("different modal content")
+                    })
+                } else {
+                    az.add_text("pop_schedule_content", 1, {
+                        "this_class": "edit_event_title",
+                        "text": "EVENT"
+                    })
+                    az.style_text("edit_event_title", 1, {
+                        "align": "center",
+                        "color": "#141414",
+                        "font-family": "Oswald",
+                        "font-size": "26px"
+                    })
+                    az.call_once_satisfied({
+                        "condition": "typeof(az.hold_value.event_clicked_id) !== 'undefined'",
+                        "function": function() {
+                            var event_data = JSON.parse(az.fetch_data($("#" + az.hold_value.event_clicked_id).attr("class"), az.get_target_instance(az.hold_value.event_clicked_id), {
+                                "key": "store_event_data"
+                            }))
+                            az.add_text("pop_schedule_content", 1, {
+                                "this_class": "event_title_1",
+                                "text": event_data.user
+                            })
+                            az.add_text("pop_schedule_content", 1, {
+                                "this_class": "event_title_1",
+                                "text": "<span style='color: #218c74'>EVENT: </span>" + event_data.event
+                            })
+                            az.all_style_text("event_title_1", {
+                                "align": "center",
+                                "color": "#141414",
+                                "font-family": "Oswald",
+                                "font-size": "20px"
+                            })
+                            console.log(event_data)
+                        }
+                    })
+                }
             }
-            }
-
         })
         az.add_event("calendar_forward_icon", 1, {
-            "type" : "click",
-            "function" : function() {
-                 fetch_and_loop()
-                 set_inner_layouts()
+            "type": "click",
+            "function": function() {
+                fetch_and_loop()
+                set_inner_layouts()
             }
         })
         az.add_event("calendar_back_icon", 1, {
-            "type" : "click",
-            "function" : function() {
-                 fetch_and_loop()
-                 set_inner_layouts()
+            "type": "click",
+            "function": function() {
+                fetch_and_loop()
+                set_inner_layouts()
             }
         })
     }
@@ -316,26 +347,21 @@ function prepare_date_time(day_number, pick_time) {
     return (fin)
 }
 
-
 function fetch_and_loop() {
     fetch_from_parse()
     az.call_once_satisfied({
-            "condition": "typeof(az.hold_value.fetch_results) !== 'undefined'",
-            "function": function() {
-                az.hold_value.fetch_results.forEach(function(obj) {
-                    var this_event = JSON.parse(obj.attributes.event);
-
-                    // event month and year
-                    var this_month = this_event.date_time.split(" ")[0]
-                    var this_year = this_event.date_time.split(" ")[2]
-
-                    // currently viewed month and year
-                    var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
-                    var calendar_month = calendar_month_year[0].trim();
-                    var calendar_year = calendar_month_year[1].trim();
-
-                    if(this_month === calendar_month && this_year === calendar_year) {
-
+        "condition": "typeof(az.hold_value.fetch_results) !== 'undefined'",
+        "function": function() {
+            az.hold_value.fetch_results.forEach(function(obj) {
+                var this_event = JSON.parse(obj.attributes.event);
+                // event month and year
+                var this_month = this_event.date_time.split(" ")[0]
+                var this_year = this_event.date_time.split(" ")[2]
+                // currently viewed month and year
+                var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
+                var calendar_month = calendar_month_year[0].trim();
+                var calendar_year = calendar_month_year[1].trim();
+                if (this_month === calendar_month && this_year === calendar_year) {
                     if (this_event.user === "Kasandra") {
                         var pass_user = "Kasandra"
                         var this_avater = "img/girl.png"
@@ -356,14 +382,20 @@ function fetch_and_loop() {
                             "text": this_event.event.slice(0, 10) + "..."
                         })
                         az.add_event("avatar_layout_" + target_id + "_cells", 1, {
-                            "type" : "click",
-                            "once" : true,
-                            "function" : function(this_id) {
+                            "type": "click",
+                            "once": true,
+                            "function": function(this_id) {
                                 az.hold_value.event_clicked = true;
+                                az.hold_value.event_clicked_id = this_id;
                                 setTimeout(function() {
                                     az.hold_value.event_clicked = false;
+                                    az.hold_value.event_clicked_id = false;
                                 }, 500)
                             }
+                        })
+                        az.store_data("avatar_layout_" + target_id + "_cells", 1, {
+                            "key": "store_event_data",
+                            "value": JSON.stringify(this_event)
                         })
                     } else {
                         az.style_html("avatar_layout_" + target_id + "_cells", 2, {
@@ -378,17 +410,22 @@ function fetch_and_loop() {
                             "border": "1px solid gold"
                         })
                         az.add_event("avatar_layout_" + target_id + "_cells", 2, {
-                            "type" : "click",
-                            "once" : true,
-                            "function" : function(this_id) {
+                            "type": "click",
+                            "once": true,
+                            "function": function(this_id) {
                                 az.hold_value.event_clicked = true;
+                                az.hold_value.event_clicked_id = this_id;
                                 setTimeout(function() {
                                     az.hold_value.event_clicked = false;
+                                    az.hold_value.event_clicked_id = false;
                                 }, 500)
                             }
                         })
+                        az.store_data("avatar_layout_" + target_id + "_cells", 2, {
+                            "key": "store_event_data",
+                            "value": JSON.stringify(this_event)
+                        })
                     }
-                    
                 }
             })
         }
