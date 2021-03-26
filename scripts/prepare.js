@@ -74,6 +74,16 @@ az.call_once_satisfied({
             height: "80vh",
             on_click_cell: function(this_id) {
                 az.hold_value.clicked_cell_id = this_id;
+
+                var check_kas = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
+                    "key" : "store_kasandra_added"
+                })
+                var check_sean = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
+                    "key" : "store_sean_added"
+                })
+
+               
+
                 var day_number = az.get_target_instance(az.hold_value.clicked_cell_id) - 8;
                 az.add_modal({
                     "this_class": "pop_schedule",
@@ -87,10 +97,9 @@ az.call_once_satisfied({
                     "box-shadow": "2px 2px 100px #141414",
                     "border": "4px solid #141414"
                 })
-                if (!az.hold_value.event_clicked) {
                     az.add_text("pop_schedule_content", 1, {
                         "this_class": "schedular_title",
-                        "text": "ADD EVENT"
+                        "text": "ADD EVENT <span class='hold_edit_events' style='visibility:hidden'><i class='fa fa-search'></i></span"
                     })
                     az.style_text("schedular_title", 1, {
                         "align": "center",
@@ -190,10 +199,8 @@ az.call_once_satisfied({
                                 })
                                 if (az.hold_value.clicked_instance === 1) {
                                     var pass_user = "Kasandra"
-                                    var this_avater = "img/girl.png"
                                 } else {
                                     var pass_user = "Sean"
-                                    var this_avater = "img/boy.png"
                                 }
                                 save_to_parse({
                                     user: pass_user,
@@ -202,6 +209,7 @@ az.call_once_satisfied({
                                 })
                                 setTimeout(function() {
                                     az.close_overlay("pop_schedule", 1)
+                           
                                     var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                                         "key": "store_layout_id",
                                     })
@@ -209,21 +217,17 @@ az.call_once_satisfied({
                                         az.style_html("avatar_layout_" + target_id + "_cells", 1, {
                                             "background": "#33d9b2"
                                         })
-                                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 1, {
-                                            "this_class": "my_tooltip",
-                                            "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
+                                        az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                                            "key" : "store_kasandra_added",
+                                            "value" : true
                                         })
                                     } else {
                                         az.style_html("avatar_layout_" + target_id + "_cells", 2, {
                                             "background": "#34ace0"
                                         })
-                                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 2, {
-                                            "this_class": "my_tooltip",
-                                            "text": az.grab_value("pick_time", 1) + "<br>" + az.grab_value("event_name", 1).slice(0, 10) + "..."
-                                        })
-                                        az.style_tooltip("my_tooltip", 1, {
-                                            "background": "#141414",
-                                            "border": "1px solid gold"
+                                        az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                                            "key" : "store_sean_added",
+                                            "value" : true
                                         })
                                     }
                                 }, 1000)
@@ -240,6 +244,16 @@ az.call_once_satisfied({
                             }
                         }
                     })
+
+ if(check_kas || check_sean) {
+
+                    az.style_html("hold_edit_events", 1, {
+                        "visibility" : "visible"
+                    })
+                }
+
+
+                    /*
                 } else {
                     az.add_text("pop_schedule_content", 1, {
                         "this_class": "edit_event_title",
@@ -275,6 +289,7 @@ az.call_once_satisfied({
                         }
                     })
                 }
+                */
             }
         })
         az.add_event("calendar_forward_icon", 1, {
@@ -315,8 +330,11 @@ function set_inner_layouts() {
                             "height": "20px",
                             "width": "100%",
                             "margin-top": "10px",
-                            "align": "center",
+                            "pointer-events" : "none",
                             "border": 0
+                        })
+                         az.all_style_layout("avatar_layout_" + layout_id + "_cells", {
+                            "pointer-events" : "none"
                         })
                         az.store_data("calendar_calendar_layout_cells", index + 1, {
                             "key": "store_layout_id",
@@ -364,10 +382,8 @@ function fetch_and_loop() {
                 if (this_month === calendar_month && this_year === calendar_year) {
                     if (this_event.user === "Kasandra") {
                         var pass_user = "Kasandra"
-                        var this_avater = "img/girl.png"
                     } else {
                         var pass_user = "Sean"
-                        var this_avater = "img/boy.png"
                     }
                     var use_instance = Number(this_event.date_time.split(" ")[1].replace(",", "")) + 8;
                     var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, { // the set_inner_layouts ids are stored on each calendar cell 
@@ -377,53 +393,25 @@ function fetch_and_loop() {
                         az.style_html("avatar_layout_" + target_id + "_cells", 1, {
                             "background": "#33d9b2"
                         })
-                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 1, {
-                            "this_class": "my_tooltip",
-                            "text": this_event.event.slice(0, 10) + "..."
-                        })
-                        az.add_event("avatar_layout_" + target_id + "_cells", 1, {
-                            "type": "click",
-                            "once": true,
-                            "function": function(this_id) {
-                                az.hold_value.event_clicked = true;
-                                az.hold_value.event_clicked_id = this_id;
-                                setTimeout(function() {
-                                    az.hold_value.event_clicked = false;
-                                    az.hold_value.event_clicked_id = false;
-                                }, 500)
-                            }
-                        })
                         az.store_data("avatar_layout_" + target_id + "_cells", 1, {
                             "key": "store_event_data",
                             "value": JSON.stringify(this_event)
+                        })
+                        az.store_data("calendar_calendar_layout_cells", use_instance, {
+                            "key" : "store_kasandra_added",
+                            "value" : true
                         })
                     } else {
                         az.style_html("avatar_layout_" + target_id + "_cells", 2, {
                             "background": "#34ace0"
                         })
-                        az.add_tooltip("avatar_layout_" + target_id + "_cells", 2, {
-                            "this_class": "my_tooltip",
-                            "text": this_event.event.slice(0, 10) + "..."
-                        })
-                        az.style_tooltip("my_tooltip", 1, {
-                            "background": "#141414",
-                            "border": "1px solid gold"
-                        })
-                        az.add_event("avatar_layout_" + target_id + "_cells", 2, {
-                            "type": "click",
-                            "once": true,
-                            "function": function(this_id) {
-                                az.hold_value.event_clicked = true;
-                                az.hold_value.event_clicked_id = this_id;
-                                setTimeout(function() {
-                                    az.hold_value.event_clicked = false;
-                                    az.hold_value.event_clicked_id = false;
-                                }, 500)
-                            }
-                        })
                         az.store_data("avatar_layout_" + target_id + "_cells", 2, {
                             "key": "store_event_data",
                             "value": JSON.stringify(this_event)
+                        })
+                        az.store_data("calendar_calendar_layout_cells", use_instance, {
+                            "key" : "store_sean_added",
+                            "value" : true
                         })
                     }
                 }
@@ -433,4 +421,10 @@ function fetch_and_loop() {
     setTimeout(function() {
         az.hold_value.fetch_results = undefined;
     }, 2000)
+}
+
+
+
+function number_of_added_avatars_in_this_cell() {
+    return($(".calendar_calendar_layout_cells").eq(az.get_target_instance(az.hold_value.clicked_cell_id) - 1).children().find("img").length);
 }
