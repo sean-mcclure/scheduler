@@ -99,7 +99,7 @@ az.call_once_satisfied({
                 })
                     az.add_text("pop_schedule_content", 1, {
                         "this_class": "schedular_title",
-                        "text": "ADD EVENT <span class='hold_edit_events' style='visibility:hidden'><i class='fa fa-search'></i></span"
+                        "text": "ADD EVENT <span class='hold_edit_events' style='visibility:hidden;position:absolute;margin-left:10px'><i class='fa fa-pencil-square'></i></span"
                     })
                     az.style_text("schedular_title", 1, {
                         "align": "center",
@@ -107,6 +107,15 @@ az.call_once_satisfied({
                         "font-family": "Oswald",
                         "font-size": "26px",
                         "margin-bottom": "10px"
+                    })
+                    az.style_html("hold_edit_events", 1, {
+                        "cursor" : "pointer"
+                    })
+                    az.add_event("hold_edit_events", 1, {
+                        "type" : "click",
+                        "function" : function() {
+                            alert("edit events")
+                        }
                     })
                     az.add_layout("pop_schedule_content", 1, {
                         "this_class": "my_layout",
