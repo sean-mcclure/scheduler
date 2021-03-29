@@ -399,6 +399,24 @@ az.call_once_satisfied({
     }
 })
 
+az.call_once_satisfied({
+    "condition" : "az.check_exists('calendar_calendar_layout_rows', 1)",
+    "function" : function() {
+        az.style_layout("calendar_calendar_layout_rows", 1, {
+            "visibility" : "hidden"
+        })
+        az.all_add_event("calendar_calendar_layout_cells", {
+            "type" : "hover",
+            "function" : function(this_id) {
+                az.animate_element("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
+                    "type" : "swing"
+                })
+            }
+        })
+    }
+})
+
+
 function set_inner_layouts() {
     az.call_once_satisfied({
         "condition": "az.number_of_elements('calendar_calendar_layout_cells') > 30",
