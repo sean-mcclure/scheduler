@@ -17,9 +17,3 @@ async function fetch_from_parse() {
     const res = await query.find();
     az.hold_value.fetch_results = res;
 }
-
-/*
- az.hold_value.fetch_results.forEach(function(obj){
-    console.log(obj.attributes.event)
- })
- */

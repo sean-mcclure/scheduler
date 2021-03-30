@@ -66,33 +66,18 @@ az.all_style_text("legend_title", {
     "color": "whitesmoke",
     "margin-left": "10px"
 })
-az.call_once_satisfied({
-    "condition": "typeof(az.components.calendar) === 'function'",
-    "function": function() {
-        az.components.calendar("main_section", 1, {
-            this_class: "calendar",
-            height: "80vh",
-            on_click_cell: function(this_id) {
-                az.hold_value.clicked_cell_id = this_id;
-                var check_kas = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
-                    "key": "store_kasandra_added"
-                })
-                var check_sean = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
-                    "key": "store_sean_added"
-                })
-                var day_number = az.get_target_instance(az.hold_value.clicked_cell_id) - 8;
-                az.add_modal({
-                    "this_class": "pop_schedule",
-                    "content_class": "pop_schedule_content"
-                })
-                az.style_modal("pop_schedule", 1, {
-                    "width": "500px",
-                    "height": "auto",
-                    "overflow-y": "hidden",
-                    "background": "#f7f1e3",
-                    "box-shadow": "2px 2px 100px #141414",
-                    "border": "4px solid #141414"
-                })
+
+
+
+
+
+
+
+
+                
+                
+                
+              
                 az.add_text("pop_schedule_content", 1, {
                     "this_class": "schedular_title",
                     "text": "ADD EVENT <span class='hold_edit_events' style='visibility:hidden;position:absolute;margin-left:10px'><i class='fa fa-pencil-square'></i></span"
@@ -110,99 +95,11 @@ az.call_once_satisfied({
                 az.add_event("hold_edit_events", 1, {
                     "type": "click",
                     "function": function() {
-                        az.empty_contents("pop_schedule_content", 1)
-                        var check_kas_data = az.fetch_data($("#" + az.hold_value.clicked_cell_id).attr("class"), az.get_target_instance(az.hold_value.clicked_cell_id), {
-                            "key": "store_event_data_kasandra"
-                        })
-                        if (typeof(check_kas_data) !== "undefined") {
-                            var event_data_kasandra = JSON.parse(check_kas_data)
-                        }
-                        var check_sean_data = az.fetch_data($("#" + az.hold_value.clicked_cell_id).attr("class"), az.get_target_instance(az.hold_value.clicked_cell_id), {
-                            "key": "store_event_data_sean"
-                        })
-                        if (typeof(check_sean_data) !== "undefined") {
-                            var event_data_sean = JSON.parse(check_sean_data)
-                        }
-                        az.add_text("pop_schedule_content", 1, {
-                            "this_class": "edit_title",
-                            "text": "EVENTS"
-                        })
-                        az.style_text("edit_title", 1, {
-                            "align": "center",
-                            "color": "#141414",
-                            "font-family": "Oswald",
-                            "font-size": "26px",
-                            "margin-bottom": "4px"
-                        })
-                        az.add_text("pop_schedule_content", 1, {
-                            "this_class": "edit_title_sub",
-                            "text": get_clicked_cell_date()
-                        })
-                        az.style_text("edit_title_sub", 1, {
-                            "font-size" : "20px",
-                            "align" : "center",
-                            "color" : "darkslategrey",
-                            "margin-bottom" : "10px"
-                        })
-                        az.add_layout("pop_schedule_content", 1, {
-                            "this_class": "edit_event_layout",
-                            "row_class": "edit_event_layout_rows",
-                            "cell_class": "edit_event_layout_cells",
-                            "number_of_rows": 2,
-                            "number_of_columns": 2
-                        })
-                        az.style_layout("edit_event_layout", 1, {
-                            "width": "100%",
-                            "height": "100%",
-                            "border": 1
-                        })
-                        az.style_layout("edit_event_layout_rows", 1, {
-                            "height": "30px",
-                            "background" : "#218c74"
-                        })
-                        az.add_text("edit_event_layout_cells", 1, {
-                            "this_class": "edit_event_who_title",
-                            "text": "KASANDRA"
-                        })
-                        az.add_text("edit_event_layout_cells", 2, {
-                            "this_class": "edit_event_who_title",
-                            "text": "SEAN"
-                        })
-                        az.all_style_text("edit_event_who_title", {
-                            "align": "center",
-                            "font-family": "Oswald",
-                            "color": "whitesmoke"
-                        })
-                        if (typeof(event_data_kasandra) !== "undefined") {
-                            event_data_sean.kasandra.forEach(function(event_obj) {
-                                az.add_text("edit_event_layout_cells", 3, {
-                                    "this_class": "event_title_data",
-                                    "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
-                                })
-                                az.add_text("edit_event_layout_cells", 3, {
-                                    "this_class": "event_title_data",
-                                    "text": "<span style='color: #218c74'>TIME: </span>" + event_obj.date_time.split(" ")[4]
-                                })
-                        })
-                        }
-                        if (typeof(event_data_sean) !== "undefined") {
-                            event_data_sean.sean.forEach(function(event_obj) {
-                                az.add_text("edit_event_layout_cells", 4, {
-                                    "this_class": "event_title_data",
-                                    "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
-                                })
-                                az.add_text("edit_event_layout_cells", 4, {
-                                    "this_class": "event_title_data",
-                                    "text": "<span style='color: #218c74'>TIME: </span>" + event_obj.date_time.split(" ")[4]
-                                })
-                            })
-                        }
-                        az.all_style_text("event_title_data", {
-                            "align": "center",
-                            "color": "#141414",
-                            "font-family": "Oswald",
-                            "font-size": "20px"
-                        })
+                        
+                        
+                        
+                       // contnue here......
+                        
                     }
                 })
                 az.add_layout("pop_schedule_content", 1, {
