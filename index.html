@@ -18,13 +18,22 @@ create_azle(function() {
 
     az.load_scripts([
         "scripts/loading.js",
+        "scripts/utility.js",
         "scripts/events.js",
         "libs/azle.components.js",
         "scripts/prepare.js",
         "scripts/parse.js"
     ])
 
-
+    az.call_once_satisfied({
+        "condition" : "typeof(az.hold_value.events) !== 'undefined'",
+        "function" : function (){
+             az.hold_value.events.add_calendar();
+            az.hold_value.events.set_inner_layouts();
+            az.hold_value.events.animate_cells();
+        }
+    })
+   
 })   
 
 </script>
