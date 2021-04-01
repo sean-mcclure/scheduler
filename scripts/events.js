@@ -8,7 +8,11 @@ az.hold_value.events = {
                     height: "80vh",
                     on_click_cell: function(this_id) {
                         az.hold_value.clicked_cell_id = this_id;
-                        az.hold_value.events.add_event_content()
+                        var check_sean = az.hold_value.utility.check_if_user_has_event_on_cell(this_id, "sean")
+                        var check_kasandra = az.hold_value.utility.check_if_user_has_event_on_cell(this_id, "kasandra")
+                        az.hold_value.events.general_modal()
+                        az.hold_value.events.add_title_to_modal("EVENTS")
+                        
                     }
                 })
             }
@@ -51,7 +55,7 @@ az.hold_value.events = {
             "margin-bottom": "10px"
         })
     },
-    add_event_content: function() {
+    general_modal : function() {
         az.add_modal({
             "this_class": "pop_schedule",
             "content_class": "pop_schedule_content"
@@ -64,6 +68,8 @@ az.hold_value.events = {
             "box-shadow": "2px 2px 100px #141414",
             "border": "4px solid #141414"
         })
+    },
+    add_event_content: function() {
         az.hold_value.events.show_cell_events("pop_schedule_content", 1)
         az.add_layout("pop_schedule_content", 1, {
             "this_class": "my_layout",
@@ -422,7 +428,8 @@ az.hold_value.events = {
                     "type": "hover",
                     "function": function(this_id) {
                         az.animate_element("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
-                            "type": "swing"
+                            "type": "swing",
+                            "speed" : "0.1s"
                         })
                     }
                 })

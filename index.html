@@ -29,8 +29,9 @@ create_azle(function() {
         "condition" : "typeof(az.hold_value.events) !== 'undefined'",
         "function" : function (){
              az.hold_value.events.add_calendar();
-            az.hold_value.events.set_inner_layouts();
-            az.hold_value.events.animate_cells();
+             setTimeout(function() {
+                 az.hold_value.events.set_inner_layouts();
+             }, 2000)
         }
     })
    

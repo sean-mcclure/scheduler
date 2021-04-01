@@ -1,5 +1,5 @@
 az.hold_value.utility = {
-    check_if_user_has_event_on_cell: function(user) {
+    check_if_user_has_event_on_cell: function(this_id, user) {
         var res = false;
         var check = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
             "key": "store_" + user + "_added"

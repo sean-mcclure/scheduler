@@ -1303,11 +1303,12 @@ az.components.utility.fill_calendar = function(options, month, year) {
                     if(index === new Date().getDate()) {
                         setTimeout(function() {
                         if(az.grab_value("calendar_today_date", 1).includes(az.components.utility.months[new Date().getMonth()])) {
-                            az.style_html(options.this_class + "_calendar_layout_cells", index + 8, {
+                            az.style_html(options.this_class + "_calendar_layout_cells", az.components.utility.instance_of_first_day() + index, {
                                 "background" : "#ccae62"
                             })
                         }
                     }, 200)
+                    console.log(index)
                     }
                     /*
                     if (typeof(az.components.selected_month_datetime[options.this_class]) !== "undefined") {
@@ -1371,6 +1372,15 @@ az.components.utility.fill_calendar = function(options, month, year) {
             })
         }
     })
+}
+az.components.utility.instance_of_first_day = function() {
+    var res = 0;    
+    $(".calendar_calendar_layout_cells").each(function(i) {
+        if($(this).text() === "1") {
+        res = i;
+        }
+    })
+    return(res)
 }
 az.components.utility.get_first_day_of_month_year = function(dateFns, month, year) {
     var months = az.components.utility.months
