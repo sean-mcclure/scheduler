@@ -12,7 +12,7 @@ az.hold_value.events = {
                         var check_kasandra = az.hold_value.utility.check_if_user_has_event_on_cell(this_id, "kasandra")
                         az.hold_value.events.general_modal()
                         az.hold_value.events.add_title_to_modal("EVENTS")
-                        
+                        az.hold_value.events.show_cell_events(check_kasandra, check_sean)
                     }
                 })
             }
@@ -30,6 +30,20 @@ az.hold_value.events = {
                 az.hold_value.events.fetch_and_loop()
                 az.hold_value.events.set_inner_layouts()
             }
+        })
+    },
+    general_modal : function() {
+        az.add_modal({
+            "this_class": "pop_schedule",
+            "content_class": "pop_schedule_content"
+        })
+        az.style_modal("pop_schedule", 1, {
+            "width": "700px",
+            "height": "auto",
+            "overflow-y": "hidden",
+            "background": "#f7f1e3",
+            "box-shadow": "2px 2px 100px #141414",
+            "border": "4px solid #141414"
         })
     },
     add_title_to_modal: function(title) {
@@ -52,116 +66,180 @@ az.hold_value.events = {
             "font-size": "20px",
             "align": "center",
             "color": "darkslategrey",
+            "margin-top": "-7px",
             "margin-bottom": "10px"
         })
     },
-    general_modal : function() {
-        az.add_modal({
-            "this_class": "pop_schedule",
-            "content_class": "pop_schedule_content"
-        })
-        az.style_modal("pop_schedule", 1, {
-            "width": "500px",
-            "height": "auto",
-            "overflow-y": "hidden",
-            "background": "#f7f1e3",
-            "box-shadow": "2px 2px 100px #141414",
-            "border": "4px solid #141414"
-        })
-    },
-    add_event_content: function() {
-        az.hold_value.events.show_cell_events("pop_schedule_content", 1)
+    show_cell_events: function(check_kasandra, check_sean) {
         az.add_layout("pop_schedule_content", 1, {
-            "this_class": "my_layout",
-            "row_class": "my_layout_rows",
-            "cell_class": "my_layout_cells",
-            "number_of_rows": 1,
+            "this_class": "edit_event_layout",
+            "row_class": "edit_event_layout_rows",
+            "cell_class": "edit_event_layout_cells",
+            "number_of_rows": 2,
             "number_of_columns": 2
         })
-        az.style_layout("my_layout", 1, {
-            "height": "auto",
-            "width": "200px",
+        az.style_layout("edit_event_layout", 1, {
+            "width": "100%",
+            "height": "100%",
+            "border": 1
+        })
+        az.style_layout("edit_event_layout_rows", 1, {
+            "height" : "50px",
+            "max-height" : "50px"
+        })
+        az.style_layout("edit_event_layout_cells", 3, {
+            "padding" : "10px"
+        })
+        az.style_layout("edit_event_layout_cells", 4, {
+            "padding" : "10px"
+        })
+        az.style_layout("edit_event_layout_rows", 1, {
+            "height": "60px",
+            "background": "#218c74"
+        })
+        az.add_text("edit_event_layout_cells", 1, {
+            "this_class": "edit_event_who_title",
+            "text": "KASANDRA"
+        })
+        az.add_text("edit_event_layout_cells", 2, {
+            "this_class": "edit_event_who_title",
+            "text": "SEAN"
+        })
+        az.all_style_text("edit_event_who_title", {
             "align": "center",
-            "margin-bottom": "10px",
-            "border": 0
+            "font-family": "Oswald",
+            "color": "whitesmoke",
+            "font-size" : "22px"
         })
-        az.add_image("my_layout_cells", 1, {
-            "this_class": "who_button",
-            "image_path": "img/girl.png"
+        az.add_icon("edit_event_who_title", 1, {
+            "this_class" : "calendar_add_icon",
+            "icon_class" : "fa-calendar-plus-o"
         })
-        az.add_image("my_layout_cells", 2, {
-            "this_class": "who_button",
-            "image_path": "img/boy.png"
+        az.add_icon("edit_event_who_title", 2, {
+            "this_class" : "calendar_add_icon",
+            "icon_class" : "fa-calendar-plus-o"
         })
-        az.all_style_image("who_button", {
-            "align": "center",
-            "width": "50px",
-            "height": "50px",
-            "background": "#d1ccc0",
-            "border-radius": "4px",
-            "padding": "5px",
-            "color": "#141414",
-            "cursor": "pointer",
-            "outline": 0
+        az.all_style_icon("calendar_add_icon", {
+            "font-size" : "20px",
+            "margin-left" : "10px",
+            "cursor" : "pointer",
+            "font-size" : "22px",
+            "position" : "absolute",
+            "margin-top" : "5px"
         })
-        az.all_add_event("who_button", {
-            "type": "click",
-            "function": function(this_id) {
-                az.hold_value.clicked_instance = az.get_target_instance(this_id)
-                az.all_style_button("who_button", {
-                    "background": "#d1ccc0",
-                    "border": "0px solid black"
-                })
-                az.style_button("who_button", az.get_target_instance(this_id), {
-                    "background": "#ffda79",
-                    "border": "1px solid black"
-                })
+        az.add_event("calendar_add_icon", 1, {
+            "type" : "click",
+            "function" : function() {
+                az.hold_value.events.add_event_content()
             }
         })
+        if (check_kasandra) {
+            var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                "key": "store_event_data_kasandra"
+            }))
+            event_data.kasandra.forEach(function(event_obj) {
+                az.add_text("edit_event_layout_cells", 3, {
+                    "this_class": "event_title_data",
+                    "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
+                })
+                az.add_text("edit_event_layout_cells", 3, {
+                    "this_class": "event_title_data",
+                    "text": "<span style='color: #218c74'>TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
+                })
+            })
+        }
+        if (check_sean) {
+            var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                "key": "store_event_data_sean"
+            }))
+            event_data.sean.forEach(function(event_obj) {
+                az.add_text("edit_event_layout_cells", 4, {
+                    "this_class": "event_title_data",
+                    "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
+                })
+                az.add_text("edit_event_layout_cells", 4, {
+                    "this_class": "event_title_data",
+                    "text": "<span style='color: #218c74'>TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
+                })
+            })
+        }
+        az.all_style_text("event_title_data", {
+            "text-align": "left",
+            "color": "#141414",
+            "font-family": "Oswald",
+            "font-size": "20px"
+        })
+    },
+    add_event_content : function() {
+        $(".edit_event_who_title").parent().addClass("swoosh")
+        az.animate_element("swoosh", 1, {
+            "type" : "bounceOutLeft"
+        })
         setTimeout(function() {
-            az.click_element("who_button", 1)
-        }, 300)
-        az.add_input("pop_schedule_content", 1, {
-            "this_class": "event_name",
-            "placeholder": "event name..."
+            az.style_text("edit_event_who_title", 1, {
+                "display" : "none"
+            })
+            az.add_input("edit_event_layout_cells", 1, {
+                "this_class": "event_name",
+                "placeholder": "event name..."
+            })
+            az.style_input("event_name", 1, {
+                "font-family": "Oswald",
+                "height" : "30px",
+                "border" : "none",
+                "width" : "140px"
+            })
+            az.add_html("edit_event_layout_cells", 1, {
+                "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
+            })
+            az.style_html("pick_time", 1, {
+                "height" : "27px",
+                "width" : "80px",
+                "border" : "none",
+                "margin-top" : "8px"
+            })
+            az.add_button("edit_event_layout_cells", 1, {
+                "this_class": "add_event_button",
+                "text": "ADD"
+            })
+            az.style_button("add_event_button", 1, {
+                "background" : "transparent",
+                "color" : "whitesmoke"
+            })
+        }, 1000)
+
+        /*
+        az.add_layout("edit_event_layout_cells", 1, {
+            "this_class": "add_event_layout",
+            "row_class": "add_event_layout_rows",
+            "cell_class": "add_event_layout_cells",
+            "number_of_rows": 1,
+            "number_of_columns": 3
         })
-        az.style_input("event_name", 1, {
-            "margin-bottom": "30px",
-            "font-family": "Oswald"
+        az.style_layout("add_event_layout", 1, {
+            "height": "100%",
+            "width": "100%",
+            "column_widths" : ["45%", "45%", "10%"],
+            "border": 1
         })
-        az.all_style_input("event_name", {
-            "align": "center",
-            "border": "none",
-            "margin-top": "10px",
-            "background": "#ffda79",
-            "width": "90%",
-            "outline": 0
-        })
-        az.add_html("pop_schedule_content", 1, {
+       
+        az.add_html("add_event_layout_cells", 2, {
             "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
         })
         az.style_html("pick_time", 1, {
-            "align": "center",
-            "margin-top": "-10px"
+            "height" : "30px",
+            "border" : "none",
+            "margin-top" : "9px"
         })
-        az.add_button("pop_schedule_content", 1, {
+        az.add_button("add_event_layout_cells", 3, {
             "this_class": "add_event_button",
             "text": "ADD"
-        })
-        az.style_button("add_event_button", 1, {
-            "align": "center",
-            "margin-top": "20px",
-            "background": "#218c74"
         })
         az.add_event("add_event_button", 1, {
             "type": "click",
             "function": function() {}
         })
-        if (check_kas || check_sean) {
-            az.style_html("hold_edit_events", 1, {
-                "visibility": "visible"
-            })
-        }
+        */
     },
     add_event_to_cell: function() {
         if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
@@ -247,68 +325,7 @@ az.hold_value.events = {
             }
         }
     },
-    show_cell_events: function(target_class, target_instance) {
-        az.empty_contents("pop_schedule_content", 1)
-        az.add_layout(target_class, target_instance, {
-            "this_class": "edit_event_layout",
-            "row_class": "edit_event_layout_rows",
-            "cell_class": "edit_event_layout_cells",
-            "number_of_rows": 2,
-            "number_of_columns": 2
-        })
-        az.style_layout("edit_event_layout", 1, {
-            "width": "100%",
-            "height": "100%",
-            "border": 1
-        })
-        az.style_layout("edit_event_layout_rows", 1, {
-            "height": "30px",
-            "background": "#218c74"
-        })
-        az.add_text("edit_event_layout_cells", 1, {
-            "this_class": "edit_event_who_title",
-            "text": "KASANDRA"
-        })
-        az.add_text("edit_event_layout_cells", 2, {
-            "this_class": "edit_event_who_title",
-            "text": "SEAN"
-        })
-        az.all_style_text("edit_event_who_title", {
-            "align": "center",
-            "font-family": "Oswald",
-            "color": "whitesmoke"
-        })
-        if (typeof(event_data_kasandra) !== "undefined") {
-            event_data_sean.kasandra.forEach(function(event_obj) {
-                az.add_text("edit_event_layout_cells", 3, {
-                    "this_class": "event_title_data",
-                    "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
-                })
-                az.add_text("edit_event_layout_cells", 3, {
-                    "this_class": "event_title_data",
-                    "text": "<span style='color: #218c74'>TIME: </span>" + event_obj.date_time.split(" ")[4]
-                })
-            })
-        }
-        if (typeof(event_data_sean) !== "undefined") {
-            event_data_sean.sean.forEach(function(event_obj) {
-                az.add_text("edit_event_layout_cells", 4, {
-                    "this_class": "event_title_data",
-                    "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
-                })
-                az.add_text("edit_event_layout_cells", 4, {
-                    "this_class": "event_title_data",
-                    "text": "<span style='color: #218c74'>TIME: </span>" + event_obj.date_time.split(" ")[4]
-                })
-            })
-        }
-        az.all_style_text("event_title_data", {
-            "align": "center",
-            "color": "#141414",
-            "font-family": "Oswald",
-            "font-size": "20px"
-        })
-    },
+    
     fetch_and_loop: function() {
         fetch_from_parse()
         az.call_once_satisfied({

@@ -32,7 +32,16 @@ az.hold_value.utility = {
         var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
         var calendar_month = calendar_month_year[0].trim();
         var calendar_year = calendar_month_year[1].trim();
-        var day_number = az.get_target_instance(az.hold_value.clicked_cell_id) - 8;
+        var day_number = $("#" + az.hold_value.clicked_cell_id).text()
         return (calendar_month + " " + day_number + ", " + calendar_year)
+    },
+    twenty_four_hour_to_regular_time: function(time) {
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        if (time.length > 1) {
+            time = time.slice(1);
+            time[5] = +time[0] < 12 ? 'AM' : 'PM';
+            time[0] = +time[0] % 12 || 12;
+        }
+        return time.join('');
     }
 }
