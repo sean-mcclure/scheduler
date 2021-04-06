@@ -32,7 +32,7 @@ az.hold_value.events = {
             }
         })
     },
-    general_modal : function() {
+    general_modal: function() {
         az.add_modal({
             "this_class": "pop_schedule",
             "content_class": "pop_schedule_content"
@@ -84,14 +84,14 @@ az.hold_value.events = {
             "border": 1
         })
         az.style_layout("edit_event_layout_rows", 1, {
-            "height" : "50px",
-            "max-height" : "50px"
+            "height": "50px",
+            "max-height": "50px"
         })
         az.style_layout("edit_event_layout_cells", 3, {
-            "padding" : "10px"
+            "padding": "10px"
         })
         az.style_layout("edit_event_layout_cells", 4, {
-            "padding" : "10px"
+            "padding": "10px"
         })
         az.style_layout("edit_event_layout_rows", 1, {
             "height": "60px",
@@ -109,27 +109,27 @@ az.hold_value.events = {
             "align": "center",
             "font-family": "Oswald",
             "color": "whitesmoke",
-            "font-size" : "22px"
+            "font-size": "22px"
         })
         az.add_icon("edit_event_who_title", 1, {
-            "this_class" : "calendar_add_icon",
-            "icon_class" : "fa-calendar-plus-o"
+            "this_class": "calendar_add_icon",
+            "icon_class": "fa-calendar-plus-o"
         })
         az.add_icon("edit_event_who_title", 2, {
-            "this_class" : "calendar_add_icon",
-            "icon_class" : "fa-calendar-plus-o"
+            "this_class": "calendar_add_icon",
+            "icon_class": "fa-calendar-plus-o"
         })
         az.all_style_icon("calendar_add_icon", {
-            "font-size" : "20px",
-            "margin-left" : "10px",
-            "cursor" : "pointer",
-            "font-size" : "22px",
-            "position" : "absolute",
-            "margin-top" : "5px"
+            "font-size": "20px",
+            "margin-left": "10px",
+            "cursor": "pointer",
+            "font-size": "22px",
+            "position": "absolute",
+            "margin-top": "5px"
         })
         az.add_event("calendar_add_icon", 1, {
-            "type" : "click",
-            "function" : function() {
+            "type": "click",
+            "function": function() {
                 az.hold_value.events.add_event_content()
             }
         })
@@ -170,14 +170,14 @@ az.hold_value.events = {
             "font-size": "20px"
         })
     },
-    add_event_content : function() {
+    add_event_content: function() {
         $(".edit_event_who_title").parent().addClass("swoosh")
         az.animate_element("swoosh", 1, {
-            "type" : "bounceOutLeft"
+            "type": "bounceOutLeft"
         })
         setTimeout(function() {
             az.style_text("edit_event_who_title", 1, {
-                "display" : "none"
+                "display": "none"
             })
             az.add_input("edit_event_layout_cells", 1, {
                 "this_class": "event_name",
@@ -185,61 +185,38 @@ az.hold_value.events = {
             })
             az.style_input("event_name", 1, {
                 "font-family": "Oswald",
-                "height" : "30px",
-                "border" : "none",
-                "width" : "140px"
+                "height": "30px",
+                "border": "none",
+                "width": "140px"
             })
             az.add_html("edit_event_layout_cells", 1, {
                 "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
             })
             az.style_html("pick_time", 1, {
-                "height" : "27px",
-                "width" : "80px",
-                "border" : "none",
-                "margin-top" : "8px"
+                "height": "27px",
+                "width": "80px",
+                "border": "none",
+                "margin-top": "8px"
             })
-            az.add_button("edit_event_layout_cells", 1, {
+            az.add_icon("edit_event_layout_cells", 1, {
                 "this_class": "add_event_button",
-                "text": "ADD"
+                "icon_class": "fa-plus-square-o"
             })
-            az.style_button("add_event_button", 1, {
-                "background" : "transparent",
-                "color" : "whitesmoke"
+            az.style_icon("add_event_button", 1, {
+                "color": "#f7f1e3",
+                "font-size": "40px",
+                "position": "absolute",
+                "margin-top": "10px",
+                "margin-left": "10px",
+                "cursor" : "ppinter"
+            })
+            az.add_event("add_event_button", 1, {
+                "type" : "click",
+                "function" : function() {
+                    az.hold_value.events.add_event_to_cell()
+                }
             })
         }, 1000)
-
-        /*
-        az.add_layout("edit_event_layout_cells", 1, {
-            "this_class": "add_event_layout",
-            "row_class": "add_event_layout_rows",
-            "cell_class": "add_event_layout_cells",
-            "number_of_rows": 1,
-            "number_of_columns": 3
-        })
-        az.style_layout("add_event_layout", 1, {
-            "height": "100%",
-            "width": "100%",
-            "column_widths" : ["45%", "45%", "10%"],
-            "border": 1
-        })
-       
-        az.add_html("add_event_layout_cells", 2, {
-            "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
-        })
-        az.style_html("pick_time", 1, {
-            "height" : "30px",
-            "border" : "none",
-            "margin-top" : "9px"
-        })
-        az.add_button("add_event_layout_cells", 3, {
-            "this_class": "add_event_button",
-            "text": "ADD"
-        })
-        az.add_event("add_event_button", 1, {
-            "type": "click",
-            "function": function() {}
-        })
-        */
     },
     add_event_to_cell: function() {
         if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
@@ -325,7 +302,6 @@ az.hold_value.events = {
             }
         }
     },
-    
     fetch_and_loop: function() {
         fetch_from_parse()
         az.call_once_satisfied({
@@ -446,7 +422,7 @@ az.hold_value.events = {
                     "function": function(this_id) {
                         az.animate_element("calendar_calendar_layout_cells", az.get_target_instance(this_id), {
                             "type": "swing",
-                            "speed" : "0.1s"
+                            "speed": "0.1s"
                         })
                     }
                 })
