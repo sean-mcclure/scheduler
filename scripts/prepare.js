@@ -1,5 +1,4 @@
 az.load_font("Oswald")
-az.hold_value.clicked_instance = 1;
 az.style_page({
     "background": "#d1ccc0"
 })

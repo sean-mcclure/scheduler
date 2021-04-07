@@ -16,7 +16,7 @@ az.hold_value.utility = {
         return (JSON.parse(check_sean_data))
     },
     get_clicked_cell_date_number: function() {
-        return (az.get_target_instance(az.hold_value.clicked_cell_id) - 8)
+        return (Number(az.hold_value.utility.get_clicked_cell_date().split(" ")[1].split(",").join("")))
     },
     prepare_date_time: function(day_number, pick_time) {
         const month_year = az.grab_value("calendar_today_date", 1).split(",");

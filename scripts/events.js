@@ -130,7 +130,13 @@ az.hold_value.events = {
         az.add_event("calendar_add_icon", 1, {
             "type": "click",
             "function": function() {
-                az.hold_value.events.add_event_content()
+                az.hold_value.events.add_event_content("kasandra")
+            }
+        })
+        az.add_event("calendar_add_icon", 2, {
+            "type": "click",
+            "function": function() {
+                az.hold_value.events.add_event_content("sean")
             }
         })
         if (check_kasandra) {
@@ -170,16 +176,30 @@ az.hold_value.events = {
             "font-size": "20px"
         })
     },
-    add_event_content: function() {
-        $(".edit_event_who_title").parent().addClass("swoosh")
+    add_event_content: function(user) {
+        if(user === "kasandra") {
+            var inst = 1
+        } else {
+            var inst = 2
+        }
+        $(".edit_event_who_title").eq(inst - 1).parent().addClass("swoosh")
         az.animate_element("swoosh", 1, {
             "type": "bounceOutLeft"
         })
         setTimeout(function() {
-            az.style_text("edit_event_who_title", 1, {
+            az.hold_value.events.add_event_line(user)
+        }, 1000)
+    },
+    add_event_line : function(user) {
+        if(user === "kasandra") {
+            var inst = 1
+        } else {
+            var inst = 2
+        }
+        az.style_text("edit_event_who_title", inst, {
                 "display": "none"
             })
-            az.add_input("edit_event_layout_cells", 1, {
+            az.add_input("edit_event_layout_cells", inst, {
                 "this_class": "event_name",
                 "placeholder": "event name..."
             })
@@ -189,7 +209,7 @@ az.hold_value.events = {
                 "border": "none",
                 "width": "140px"
             })
-            az.add_html("edit_event_layout_cells", 1, {
+            az.add_html("edit_event_layout_cells", inst, {
                 "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
             })
             az.style_html("pick_time", 1, {
@@ -198,98 +218,55 @@ az.hold_value.events = {
                 "border": "none",
                 "margin-top": "8px"
             })
-            az.add_icon("edit_event_layout_cells", 1, {
+            az.add_icon("edit_event_layout_cells", inst, {
                 "this_class": "add_event_button",
                 "icon_class": "fa-plus-square-o"
             })
             az.style_icon("add_event_button", 1, {
                 "color": "#f7f1e3",
-                "font-size": "40px",
+                "font-size": "35px",
                 "position": "absolute",
-                "margin-top": "10px",
+                "margin-top": "14px",
                 "margin-left": "10px",
                 "cursor" : "ppinter"
             })
             az.add_event("add_event_button", 1, {
                 "type" : "click",
-                "function" : function() {
-                    az.hold_value.events.add_event_to_cell()
+                "function" : function(this_id) {
+                    az.hold_value.events.add_event_to_cell(user)
                 }
             })
-        }, 1000)
     },
-    add_event_to_cell: function() {
+    add_event_to_cell: function(user) {
         if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
-            az.animate_element("add_event_button", 1, {
-                "type": "spin"
-            })
-            if (az.hold_value.clicked_instance === 1) {
-                var pass_user = "Kasandra"
-            } else {
-                var pass_user = "Sean"
-            }
             var event = {
-                user: pass_user,
+                user: user,
                 event: az.grab_value("event_name", 1),
-                date_time: az.hold_value.utility.prepare_date_time(day_number, az.grab_value("pick_time", 1))
+                date_time: az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1))
             }
-            setTimeout(function() {
-                az.close_overlay("pop_schedule", 1)
-                var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                    "key": "store_layout_id",
+            var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                "key": "store_layout_id",
+            })
+            if (user === "kasandra") {
+                var current_event_obj = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                    "key": "store_event_data_kasandra",
+                }))
+                current_event_obj.kasandra.push(event)
+                az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                    "key": "store_event_data_kasandra",
+                    "value": JSON.stringify(current_event_obj)
                 })
-                if (pass_user !== "Sean") {
-                    var event_obj = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                        "key": "store_kasandra_added",
-                    }))
-                    if (typeof(event_obj) !== "undefined") {
-                        event_obj.kasandra.push(event)
-                    } else {
-                        event_obj = {
-                            sean: [],
-                            kasandra: []
-                        }
-                        event_obj.kasandra.push(event)
-                    }
-                    save_to_parse(event_obj)
-                    az.style_html("avatar_layout_" + target_id + "_cells", 1, {
-                        "background": "#33d9b2"
-                    })
-                    az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                        "key": "store_kasandra_added",
-                        "value": true
-                    })
-                    az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                        "key": "store_event_data_kasandra",
-                        "value": JSON.stringify(event_obj)
-                    })
-                } else {
-                    var event_obj = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                        "key": "store_sean_added",
-                    }))
-                    if (typeof(event_obj) !== "undefined") {
-                        event_obj.sean.push(event)
-                    } else {
-                        event_obj = {
-                            sean: [],
-                            kasandra: []
-                        }
-                        event_obj.sean.push(event)
-                    }
-                    save_to_parse(event_obj)
-                    az.style_html("avatar_layout_" + target_id + "_cells", 2, {
-                        "background": "#34ace0"
-                    })
-                    az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                        "key": "store_sean_added",
-                        "value": true
-                    })
-                    az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                        "key": "store_event_data_sean",
-                        "value": JSON.stringify(event_obj)
-                    })
-                }
-            }, 1000)
+            } else {
+                var current_event_obj = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                    "key": "store_event_data_sean",
+                }))
+                current_event_obj.sean.push(event)
+                az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                    "key": "store_event_data_sean",
+                    "value": JSON.stringify(current_event_obj)
+                })
+            }
+            console.log(current_event_obj)
         } else {
             if (az.grab_value("pick_time", 1) === "") {
                 az.animate_element("pick_time", 1, {
