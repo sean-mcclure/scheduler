@@ -336,6 +336,7 @@ az.hold_value.events = {
                     "key": "store_event_data_kasandra",
                     "value": JSON.stringify(current_event_obj)
                 })
+                 az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "kasandra")
             } else {
                 var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_sean"
@@ -359,6 +360,7 @@ az.hold_value.events = {
                     "key": "store_event_data_sean",
                     "value": JSON.stringify(current_event_obj)
                 })
+                az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "sean")
             }
             console.log(current_event_obj)
         } else {
@@ -372,6 +374,52 @@ az.hold_value.events = {
                 })
             }
         }
+    },
+    add_event_line_to_scrollable : function(event_name, date_time, user) {
+        alert(event_name)
+        alert(date_time)
+        alert(user)
+        if(user === "kasandra") {
+            var inst = 1;
+        } else {
+            var inst = 2;
+        }
+        var layout_id = "layout_" + az.makeid();
+        az.add_layout("scrollable_events", inst, {
+            "this_class": "line_event_layout_" + layout_id,
+            "row_class": "line_event_layout_rows_" + layout_id,
+            "cell_class": "line_event_layout_cells_" + layout_id,
+            "number_of_rows": 1,
+            "number_of_columns": 2
+        })
+        az.style_layout("line_event_layout_" + layout_id, 1, {
+            "width": "100%",
+            "height": "auto",
+            "column_widths" : ["90%", "10%"],
+            "border": 0
+        })
+        az.add_text("line_event_layout_cells_" + layout_id, 1, {
+            "this_class": "event_title_data",
+            "text": "<span style='color: #218c74'>EVENT: </span>" + event_name
+        })
+        az.add_text("line_event_layout_cells_" + layout_id, 1, {
+            "this_class": "event_title_data",
+            "text": "<span style='color: #673523'>&#8594;TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(date_time.split(" ")[4])
+        })
+        az.add_text("line_event_layout_cells_" + layout_id, 1, {
+            "this_class": "event_title_data",
+            "text": "<span style='color: #673523'>- - - - - - - - - - - - - - - - - - - - - - - - - -</span>"
+        })
+        az.add_icon("line_event_layout_cells_" + layout_id, 2, {
+            "this_class" : "delete_event_" + layout_id,
+            "icon_class" : "fa-times-circle"
+        })
+        az.style_icon("delete_event_" + layout_id, 1, {
+            "color" : "red",
+            "font-size" : "30px",
+            "align" : "center",
+            "cursor" : "pointer"
+        })
     },
     fetch_and_loop: function() {
         fetch_from_parse()
