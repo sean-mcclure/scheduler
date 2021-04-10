@@ -83,10 +83,6 @@ az.hold_value.events = {
             "height": "100%",
             "border": 1
         })
-        az.style_layout("edit_event_layout_rows", 1, {
-            "height": "50px",
-            "max-height": "50px"
-        })
         az.style_layout("edit_event_layout_cells", 3, {
             "padding": "10px"
         })
@@ -96,6 +92,20 @@ az.hold_value.events = {
         az.style_layout("edit_event_layout_rows", 1, {
             "height": "60px",
             "background": "#218c74"
+        })
+        az.add_scrollable_container("edit_event_layout_cells", 3, {
+            "this_class": "scrollable_events",
+            "direction": "vertical"
+        })
+        az.add_scrollable_container("edit_event_layout_cells", 4, {
+            "this_class": "scrollable_events",
+            "direction": "vertical"
+        })
+        az.all_style_scrollable_container("scrollable_events", {
+            "width" : "100%",
+            "height" : "250px",
+            "background" : "transparent",
+            "border" : "none"
         })
         az.add_text("edit_event_layout_cells", 1, {
             "this_class": "edit_event_who_title",
@@ -144,13 +154,17 @@ az.hold_value.events = {
                 "key": "store_event_data_kasandra"
             }))
             event_data.kasandra.forEach(function(event_obj) {
-                az.add_text("edit_event_layout_cells", 3, {
+                az.add_text("scrollable_events", 1, {
                     "this_class": "event_title_data",
                     "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
                 })
-                az.add_text("edit_event_layout_cells", 3, {
+                az.add_text("scrollable_events", 1, {
                     "this_class": "event_title_data",
-                    "text": "<span style='color: #218c74'>TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
+                    "text": "<span style='color: #673523'>&#8594;TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
+                })
+                az.add_text("scrollable_events", 1, {
+                    "this_class": "event_title_data",
+                    "text": "<span style='color: #673523'>- - - - - - - - - - - - -</span>"
                 })
             })
         }
@@ -159,7 +173,7 @@ az.hold_value.events = {
                 "key": "store_event_data_sean"
             }))
             event_data.sean.forEach(function(event_obj) {
-                az.add_text("edit_event_layout_cells", 4, {
+                az.add_text("scrollable_events", 2, {
                     "this_class": "event_title_data",
                     "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
                 })
@@ -228,7 +242,7 @@ az.hold_value.events = {
                 "position": "absolute",
                 "margin-top": "14px",
                 "margin-left": "10px",
-                "cursor" : "ppinter"
+                "cursor" : "pointer"
             })
             az.add_event("add_event_button", 1, {
                 "type" : "click",
