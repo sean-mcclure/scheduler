@@ -336,7 +336,10 @@ az.hold_value.events = {
                     "key": "store_event_data_kasandra",
                     "value": JSON.stringify(current_event_obj)
                 })
-                 az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "kasandra")
+                az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "kasandra");
+                az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                    "background": "#33d9b2"
+                })
             } else {
                 var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_sean"
@@ -360,7 +363,10 @@ az.hold_value.events = {
                     "key": "store_event_data_sean",
                     "value": JSON.stringify(current_event_obj)
                 })
-                az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "sean")
+                az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "sean");
+                az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                    "background": "rgb(52, 172, 224)"
+                })
             }
             console.log(current_event_obj)
         } else {
@@ -376,9 +382,6 @@ az.hold_value.events = {
         }
     },
     add_event_line_to_scrollable : function(event_name, date_time, user) {
-        alert(event_name)
-        alert(date_time)
-        alert(user)
         if(user === "kasandra") {
             var inst = 1;
         } else {
@@ -419,6 +422,12 @@ az.hold_value.events = {
             "font-size" : "30px",
             "align" : "center",
             "cursor" : "pointer"
+        })
+        az.all_style_text("event_title_data", {
+            "text-align": "left",
+            "color": "#141414",
+            "font-family": "Oswald",
+            "font-size": "20px"
         })
     },
     fetch_and_loop: function() {
