@@ -273,14 +273,14 @@ az.hold_value.events = {
                 "font-family": "Oswald",
                 "height": "30px",
                 "border": "none",
-                "width": "140px"
+                "width": "110px"
             })
             az.add_html("edit_event_layout_cells", inst, {
                 "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
             })
             az.style_html("pick_time", 1, {
                 "height": "27px",
-                "width": "80px",
+                "width": "110px",
                 "border": "none",
                 "margin-top": "8px"
             })
@@ -336,10 +336,13 @@ az.hold_value.events = {
                     "key": "store_event_data_kasandra",
                     "value": JSON.stringify(current_event_obj)
                 })
+                save_to_parse(current_event_obj)
                 az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "kasandra");
                 az.style_html("avatar_layout_" + target_id + "_cells", 1, {
                     "background": "#33d9b2"
                 })
+                az.clear_input("event_name", 1)
+                az.clear_input("pick_time", 1)
             } else {
                 var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_sean"
@@ -363,10 +366,13 @@ az.hold_value.events = {
                     "key": "store_event_data_sean",
                     "value": JSON.stringify(current_event_obj)
                 })
+                save_to_parse(current_event_obj)
                 az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), "sean");
                 az.style_html("avatar_layout_" + target_id + "_cells", 2, {
                     "background": "rgb(52, 172, 224)"
                 })
+                az.clear_input("event_name", 1)
+                az.clear_input("pick_time", 1)
             }
             console.log(current_event_obj)
         } else {
