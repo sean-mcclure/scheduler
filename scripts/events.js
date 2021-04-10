@@ -154,32 +154,84 @@ az.hold_value.events = {
                 "key": "store_event_data_kasandra"
             }))
             event_data.kasandra.forEach(function(event_obj) {
-                az.add_text("scrollable_events", 1, {
+                var layout_id = "layout_" + az.makeid();
+                az.add_layout("scrollable_events", 1, {
+                    "this_class": "line_event_layout_" + layout_id,
+                    "row_class": "line_event_layout_rows_" + layout_id,
+                    "cell_class": "line_event_layout_cells_" + layout_id,
+                    "number_of_rows": 1,
+                    "number_of_columns": 2
+                })
+                az.style_layout("line_event_layout_" + layout_id, 1, {
+                    "width": "100%",
+                    "height": "auto",
+                    "column_widths" : ["90%", "10%"],
+                    "border": 0
+                })
+                az.add_text("line_event_layout_cells_" + layout_id, 1, {
                     "this_class": "event_title_data",
                     "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
                 })
-                az.add_text("scrollable_events", 1, {
+                az.add_text("line_event_layout_cells_" + layout_id, 1, {
                     "this_class": "event_title_data",
                     "text": "<span style='color: #673523'>&#8594;TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
                 })
-                az.add_text("scrollable_events", 1, {
+                az.add_text("line_event_layout_cells_" + layout_id, 1, {
                     "this_class": "event_title_data",
-                    "text": "<span style='color: #673523'>- - - - - - - - - - - - -</span>"
+                    "text": "<span style='color: #673523'>- - - - - - - - - - - - - - - - - - - - - - - - - -</span>"
+                })
+                az.add_icon("line_event_layout_cells_" + layout_id, 2, {
+                    "this_class" : "delete_event_" + layout_id,
+                    "icon_class" : "fa-times-circle"
+                })
+                az.style_icon("delete_event_" + layout_id, 1, {
+                    "color" : "red",
+                    "font-size" : "30px",
+                    "align" : "center",
+                    "cursor" : "pointer"
                 })
             })
         }
         if (check_sean) {
             var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                 "key": "store_event_data_sean"
-            }))
+            })) 
             event_data.sean.forEach(function(event_obj) {
-                az.add_text("scrollable_events", 2, {
+                var layout_id = "layout_" + az.makeid();
+                az.add_layout("scrollable_events", 2, {
+                    "this_class": "line_event_layout_" + layout_id,
+                    "row_class": "line_event_layout_rows_" + layout_id,
+                    "cell_class": "line_event_layout_cells_" + layout_id,
+                    "number_of_rows": 1,
+                    "number_of_columns": 2
+                })
+                az.style_layout("line_event_layout_" + layout_id, 1, {
+                    "width": "100%",
+                    "height": "auto",
+                    "column_widths" : ["90%", "10%"],
+                    "border": 0
+                })
+                az.add_text("line_event_layout_cells_" + layout_id, 1, {
                     "this_class": "event_title_data",
                     "text": "<span style='color: #218c74'>EVENT: </span>" + event_obj.event
                 })
-                az.add_text("edit_event_layout_cells", 4, {
+                az.add_text("line_event_layout_cells_" + layout_id, 1, {
                     "this_class": "event_title_data",
-                    "text": "<span style='color: #218c74'>TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
+                    "text": "<span style='color: #673523'>&#8594;TIME: </span>" + az.hold_value.utility.twenty_four_hour_to_regular_time(event_obj.date_time.split(" ")[4])
+                })
+                az.add_text("line_event_layout_cells_" + layout_id, 1, {
+                    "this_class": "event_title_data",
+                    "text": "<span style='color: #673523'>- - - - - - - - - - - - - - - - - - - - - - - - - -</span>"
+                })
+                az.add_icon("line_event_layout_cells_" + layout_id, 2, {
+                    "this_class" : "delete_event_" + layout_id,
+                    "icon_class" : "fa-times-circle"
+                })
+                az.style_icon("delete_event_" + layout_id, 1, {
+                    "color" : "red",
+                    "font-size" : "30px",
+                    "align" : "center",
+                    "cursor" : "pointer"
                 })
             })
         }
@@ -262,19 +314,47 @@ az.hold_value.events = {
                 "key": "store_layout_id",
             })
             if (user === "kasandra") {
-                var current_event_obj = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                    "key": "store_event_data_kasandra",
-                }))
-                current_event_obj.kasandra.push(event)
+                var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                    "key": "store_event_data_kasandra"
+                })
+                if(typeof(check_data) !== "undefined") {
+                    var current_event_obj = JSON.parse(check_data)
+                    current_event_obj.kasandra.push(event)
+                } else {
+                    var current_event_obj = {
+                        sean : [],
+                        kasandra : []
+                    }
+                    var event = {
+                        user: "kasandra",
+                        event: az.grab_value("event_name", 1),
+                        date_time: az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1))
+                    } 
+                    current_event_obj.kasandra.push(event)
+                }
                 az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_kasandra",
                     "value": JSON.stringify(current_event_obj)
                 })
             } else {
-                var current_event_obj = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                    "key": "store_event_data_sean",
-                }))
-                current_event_obj.sean.push(event)
+                var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                    "key": "store_event_data_sean"
+                })
+                if(typeof(check_data) !== "undefined") {
+                    var current_event_obj = JSON.parse(check_data)
+                    current_event_obj.sean.push(event)
+                } else {
+                    var current_event_obj = {
+                        sean : [],
+                        kasandra : []
+                    }
+                    var event = {
+                        user: "sean",
+                        event: az.grab_value("event_name", 1),
+                        date_time: az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1))
+                    } 
+                    current_event_obj.sean.push(event)
+                }
                 az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_sean",
                     "value": JSON.stringify(current_event_obj)
