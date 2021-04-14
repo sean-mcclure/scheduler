@@ -43,5 +43,14 @@ az.hold_value.utility = {
             time[0] = +time[0] % 12 || 12;
         }
         return time.join('');
+    },
+    where_is_number_1_on_month: function() {
+        var res;
+        $(".calendar_calendar_layout_cells").each(function(i) {
+            if ($(this).text() === "1") {
+                res = i;
+            }
+        })
+        return (res)
     }
 }

@@ -102,10 +102,10 @@ az.hold_value.events = {
             "direction": "vertical"
         })
         az.all_style_scrollable_container("scrollable_events", {
-            "width" : "100%",
-            "height" : "250px",
-            "background" : "transparent",
-            "border" : "none"
+            "width": "100%",
+            "height": "250px",
+            "background": "transparent",
+            "border": "none"
         })
         az.add_text("edit_event_layout_cells", 1, {
             "this_class": "edit_event_who_title",
@@ -165,7 +165,7 @@ az.hold_value.events = {
                 az.style_layout("line_event_layout_" + layout_id, 1, {
                     "width": "100%",
                     "height": "auto",
-                    "column_widths" : ["90%", "10%"],
+                    "column_widths": ["90%", "10%"],
                     "border": 0
                 })
                 az.add_text("line_event_layout_cells_" + layout_id, 1, {
@@ -181,21 +181,21 @@ az.hold_value.events = {
                     "text": "<span style='color: #673523'>- - - - - - - - - - - - - - - - - - - - - - - - - -</span>"
                 })
                 az.add_icon("line_event_layout_cells_" + layout_id, 2, {
-                    "this_class" : "delete_event_" + layout_id,
-                    "icon_class" : "fa-times-circle"
+                    "this_class": "delete_event_" + layout_id,
+                    "icon_class": "fa-times-circle"
                 })
                 az.style_icon("delete_event_" + layout_id, 1, {
-                    "color" : "red",
-                    "font-size" : "30px",
-                    "align" : "center",
-                    "cursor" : "pointer"
+                    "color": "red",
+                    "font-size": "30px",
+                    "align": "center",
+                    "cursor": "pointer"
                 })
             })
         }
         if (check_sean) {
             var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                 "key": "store_event_data_sean"
-            })) 
+            }))
             event_data.sean.forEach(function(event_obj) {
                 var layout_id = "layout_" + az.makeid();
                 az.add_layout("scrollable_events", 2, {
@@ -208,7 +208,7 @@ az.hold_value.events = {
                 az.style_layout("line_event_layout_" + layout_id, 1, {
                     "width": "100%",
                     "height": "auto",
-                    "column_widths" : ["90%", "10%"],
+                    "column_widths": ["90%", "10%"],
                     "border": 0
                 })
                 az.add_text("line_event_layout_cells_" + layout_id, 1, {
@@ -224,14 +224,14 @@ az.hold_value.events = {
                     "text": "<span style='color: #673523'>- - - - - - - - - - - - - - - - - - - - - - - - - -</span>"
                 })
                 az.add_icon("line_event_layout_cells_" + layout_id, 2, {
-                    "this_class" : "delete_event_" + layout_id,
-                    "icon_class" : "fa-times-circle"
+                    "this_class": "delete_event_" + layout_id,
+                    "icon_class": "fa-times-circle"
                 })
                 az.style_icon("delete_event_" + layout_id, 1, {
-                    "color" : "red",
-                    "font-size" : "30px",
-                    "align" : "center",
-                    "cursor" : "pointer"
+                    "color": "red",
+                    "font-size": "30px",
+                    "align": "center",
+                    "cursor": "pointer"
                 })
             })
         }
@@ -243,7 +243,7 @@ az.hold_value.events = {
         })
     },
     add_event_content: function(user) {
-        if(user === "kasandra") {
+        if (user === "kasandra") {
             var inst = 1
         } else {
             var inst = 2
@@ -256,52 +256,52 @@ az.hold_value.events = {
             az.hold_value.events.add_event_line(user)
         }, 1000)
     },
-    add_event_line : function(user) {
-        if(user === "kasandra") {
+    add_event_line: function(user) {
+        if (user === "kasandra") {
             var inst = 1
         } else {
             var inst = 2
         }
         az.style_text("edit_event_who_title", inst, {
-                "display": "none"
-            })
-            az.add_input("edit_event_layout_cells", inst, {
-                "this_class": "event_name",
-                "placeholder": "event name..."
-            })
-            az.style_input("event_name", 1, {
-                "font-family": "Oswald",
-                "height": "30px",
-                "border": "none",
-                "width": "110px"
-            })
-            az.add_html("edit_event_layout_cells", inst, {
-                "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
-            })
-            az.style_html("pick_time", 1, {
-                "height": "27px",
-                "width": "110px",
-                "border": "none",
-                "margin-top": "8px"
-            })
-            az.add_icon("edit_event_layout_cells", inst, {
-                "this_class": "add_event_button",
-                "icon_class": "fa-plus-square-o"
-            })
-            az.style_icon("add_event_button", 1, {
-                "color": "#f7f1e3",
-                "font-size": "35px",
-                "position": "absolute",
-                "margin-top": "14px",
-                "margin-left": "10px",
-                "cursor" : "pointer"
-            })
-            az.add_event("add_event_button", 1, {
-                "type" : "click",
-                "function" : function(this_id) {
-                    az.hold_value.events.add_event_to_cell(user)
-                }
-            })
+            "display": "none"
+        })
+        az.add_input("edit_event_layout_cells", inst, {
+            "this_class": "event_name",
+            "placeholder": "event name..."
+        })
+        az.style_input("event_name", 1, {
+            "font-family": "Oswald",
+            "height": "30px",
+            "border": "none",
+            "width": "110px"
+        })
+        az.add_html("edit_event_layout_cells", inst, {
+            "html": "<input type='time' class='pick_time' id='appt' name='appt' min='09:00' max='18:00' required>"
+        })
+        az.style_html("pick_time", 1, {
+            "height": "27px",
+            "width": "110px",
+            "border": "none",
+            "margin-top": "8px"
+        })
+        az.add_icon("edit_event_layout_cells", inst, {
+            "this_class": "add_event_button",
+            "icon_class": "fa-plus-square-o"
+        })
+        az.style_icon("add_event_button", 1, {
+            "color": "#f7f1e3",
+            "font-size": "35px",
+            "position": "absolute",
+            "margin-top": "14px",
+            "margin-left": "10px",
+            "cursor": "pointer"
+        })
+        az.add_event("add_event_button", 1, {
+            "type": "click",
+            "function": function(this_id) {
+                az.hold_value.events.add_event_to_cell(user)
+            }
+        })
     },
     add_event_to_cell: function(user) {
         if (az.grab_value("pick_time", 1) !== "" && az.grab_value("event_name", 1) !== "") {
@@ -317,19 +317,19 @@ az.hold_value.events = {
                 var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_kasandra"
                 })
-                if(typeof(check_data) !== "undefined") {
+                if (typeof(check_data) !== "undefined") {
                     var current_event_obj = JSON.parse(check_data)
                     current_event_obj.kasandra.push(event)
                 } else {
                     var current_event_obj = {
-                        sean : [],
-                        kasandra : []
+                        sean: [],
+                        kasandra: []
                     }
                     var event = {
                         user: "kasandra",
                         event: az.grab_value("event_name", 1),
                         date_time: az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1))
-                    } 
+                    }
                     current_event_obj.kasandra.push(event)
                 }
                 az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
@@ -347,20 +347,21 @@ az.hold_value.events = {
                 var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_sean"
                 })
-                if(typeof(check_data) !== "undefined") {
+                if (typeof(check_data) !== "undefined") {
                     var current_event_obj = JSON.parse(check_data)
                     current_event_obj.sean.push(event)
                 } else {
                     var current_event_obj = {
-                        sean : [],
-                        kasandra : []
+                        sean: [],
+                        kasandra: []
                     }
                     var event = {
                         user: "sean",
                         event: az.grab_value("event_name", 1),
                         date_time: az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1))
-                    } 
+                    }
                     current_event_obj.sean.push(event)
+                    alert(event)
                 }
                 az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                     "key": "store_event_data_sean",
@@ -387,8 +388,8 @@ az.hold_value.events = {
             }
         }
     },
-    add_event_line_to_scrollable : function(event_name, date_time, user) {
-        if(user === "kasandra") {
+    add_event_line_to_scrollable: function(event_name, date_time, user) {
+        if (user === "kasandra") {
             var inst = 1;
         } else {
             var inst = 2;
@@ -404,7 +405,7 @@ az.hold_value.events = {
         az.style_layout("line_event_layout_" + layout_id, 1, {
             "width": "100%",
             "height": "auto",
-            "column_widths" : ["90%", "10%"],
+            "column_widths": ["90%", "10%"],
             "border": 0
         })
         az.add_text("line_event_layout_cells_" + layout_id, 1, {
@@ -420,14 +421,14 @@ az.hold_value.events = {
             "text": "<span style='color: #673523'>- - - - - - - - - - - - - - - - - - - - - - - - - -</span>"
         })
         az.add_icon("line_event_layout_cells_" + layout_id, 2, {
-            "this_class" : "delete_event_" + layout_id,
-            "icon_class" : "fa-times-circle"
+            "this_class": "delete_event_" + layout_id,
+            "icon_class": "fa-times-circle"
         })
         az.style_icon("delete_event_" + layout_id, 1, {
-            "color" : "red",
-            "font-size" : "30px",
-            "align" : "center",
-            "cursor" : "pointer"
+            "color": "red",
+            "font-size": "30px",
+            "align": "center",
+            "cursor": "pointer"
         })
         az.all_style_text("event_title_data", {
             "text-align": "left",
@@ -441,57 +442,60 @@ az.hold_value.events = {
         az.call_once_satisfied({
             "condition": "typeof(az.hold_value.fetch_results) !== 'undefined'",
             "function": function() {
-                console.log(az.hold_value.fetch_results)
                 az.hold_value.fetch_results.forEach(function(obj) {
                     event_obj = {
                         sean: [],
                         kasandra: []
                     }
                     var this_event = JSON.parse(obj.attributes.event);
-                    // event month and year
-                    var this_month = this_event.date_time.split(" ")[0]
-                    var this_year = this_event.date_time.split(" ")[2]
-                    // currently viewed month and year
-                    var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
-                    var calendar_month = calendar_month_year[0].trim();
-                    var calendar_year = calendar_month_year[1].trim();
-                    if (this_month === calendar_month && this_year === calendar_year) {
-                        if (this_event.user === "Kasandra") {
-                            var pass_user = "Kasandra"
-                        } else {
-                            var pass_user = "Sean"
-                        }
-                        var use_instance = Number(this_event.date_time.split(" ")[1].replace(",", "")) + 8;
-                        var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, { // the set_inner_layouts ids are stored on each calendar cell 
-                            "key": "store_layout_id",
+                    if (this_event.sean.length > 0) {
+                        this_event.sean.forEach(function(obj) {
+                            // event month and year
+                            var this_month = obj.date_time.split(" ")[0]
+                            var this_year = obj.date_time.split(" ")[2]
+                            // currently viewed month and year
+                            var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
+                            var calendar_month = calendar_month_year[0].trim();
+                            var calendar_year = calendar_month_year[1].trim();
+                            if (this_month === calendar_month && this_year === calendar_year) {
+                                var use_instance = Number(obj.date_time.split(" ")[1].replace(",", "")) + az.hold_value.utility.where_is_number_1_on_month()
+                                var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, { // the set_inner_layouts ids are stored on each calendar cell 
+                                    "key": "store_layout_id",
+                                })
+                                event_obj.sean.push(obj)
+                                az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                                    "background": "#34ace0"
+                                })
+                                az.store_data("calendar_calendar_layout_cells", use_instance, {
+                                    "key": "store_event_data_sean",
+                                    "value": JSON.stringify(event_obj)
+                                })
+                            }
                         })
-                        if (pass_user !== "Sean") {
-                            event_obj.kasandra.push(this_event)
-                            az.style_html("avatar_layout_" + target_id + "_cells", 1, {
-                                "background": "#33d9b2"
-                            })
-                            az.store_data("calendar_calendar_layout_cells", use_instance, {
-                                "key": "store_event_data_kasandra",
-                                "value": JSON.stringify(event_obj)
-                            })
-                            az.store_data("calendar_calendar_layout_cells", use_instance, {
-                                "key": "store_kasandra_added",
-                                "value": true
-                            })
-                        } else {
-                            event_obj.sean.push(this_event)
-                            az.style_html("avatar_layout_" + target_id + "_cells", 2, {
-                                "background": "#34ace0"
-                            })
-                            az.store_data("calendar_calendar_layout_cells", use_instance, {
-                                "key": "store_event_data_sean",
-                                "value": JSON.stringify(event_obj)
-                            })
-                            az.store_data("calendar_calendar_layout_cells", use_instance, {
-                                "key": "store_sean_added",
-                                "value": true
-                            })
-                        }
+                    } else {
+                        this_event.kasandra.forEach(function(obj) {
+                            // event month and year
+                            var this_month = obj.date_time.split(" ")[0]
+                            var this_year = obj.date_time.split(" ")[2]
+                            // currently viewed month and year
+                            var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
+                            var calendar_month = calendar_month_year[0].trim();
+                            var calendar_year = calendar_month_year[1].trim();
+                            if (this_month === calendar_month && this_year === calendar_year) {
+                                var use_instance = Number(obj.date_time.split(" ")[1].replace(",", "")) + az.hold_value.utility.where_is_number_1_on_month()
+                                var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, { // the set_inner_layouts ids are stored on each calendar cell 
+                                    "key": "store_layout_id",
+                                })
+                                event_obj.kasandra.push(obj)
+                                az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                                    "background": "#33D9B2"
+                                })
+                                az.store_data("calendar_calendar_layout_cells", use_instance, {
+                                    "key": "store_event_data_kasandra",
+                                    "value": JSON.stringify(event_obj)
+                                })
+                            }
+                        })
                     }
                 })
             }
