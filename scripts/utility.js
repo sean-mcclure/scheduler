@@ -52,5 +52,12 @@ az.hold_value.utility = {
             }
         })
         return (res)
+    },
+    get_object_id_from_deleted_event : function() {
+        az.hold_value.fetch_results.forEach(function(obj) {
+    if(JSON.parse(obj.attributes.event)[user]["event"] === event_name) {
+        res = obj.id
+    }
+})
     }
 }

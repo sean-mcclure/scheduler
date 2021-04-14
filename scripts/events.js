@@ -153,6 +153,7 @@ az.hold_value.events = {
             var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
                 "key": "store_event_data_kasandra"
             }))
+            console.log(event_data)
             event_data.kasandra.forEach(function(event_obj) {
                 var layout_id = "layout_" + az.makeid();
                 az.add_layout("scrollable_events", 1, {
