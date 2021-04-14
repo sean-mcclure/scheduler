@@ -53,11 +53,47 @@ az.hold_value.utility = {
         })
         return (res)
     },
-    get_object_id_from_deleted_event : function() {
+    get_object_id_from_deleted_event: function() {
         az.hold_value.fetch_results.forEach(function(obj) {
-    if(JSON.parse(obj.attributes.event)[user]["event"] === event_name) {
-        res = obj.id
+            if (JSON.parse(obj.attributes.event)[user]["event"] === event_name) {
+                res = obj.id
+            }
+        })
+    },
+    add_event_to_modal_and_save_to_parse: function(options) {
+        var event_obj = {
+            event: options.event_name,
+            date_time: options.date_time
+        }
+        var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+            "key": "store_layout_id",
+        })
+        var check_data = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+            "key": "store_event_data_" + options.user
+        })
+        if (typeof(check_data) !== "undefined") {
+            var event_arr = JSON.parse(check_data)
+            event_arr.push(event_obj)
+        } else {
+            var event_arr = [];
+            event_arr.push(event_obj)
+        }
+        az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+            "key": "store_event_data_" + options.user,
+            "value": JSON.stringify(event_arr)
+        })
+        save_to_parse(event_obj, options.user)
+        az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), options.user);
+        if(user === "kasandra") {
+        az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+            "background": "#33d9b2"
+        })
+    } else {
+        az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+            "background": "#35ACE0"
+        })
     }
-})
+        az.clear_input("event_name", 1)
+        az.clear_input("pick_time", 1)
     }
 }
