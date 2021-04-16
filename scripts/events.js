@@ -245,8 +245,24 @@ az.hold_value.events = {
     add_event_content: function(user) {
         if (user === "kasandra") {
             var inst = 1
+            az.style_layout("edit_event_layout_cells", 1, {
+                "pointer-events" : "auto",
+                "opacity" : "1"
+            })
+            az.style_layout("edit_event_layout_cells", 2, {
+                "pointer-events" : "none",
+                "opacity" : "0.5"
+            })
         } else {
             var inst = 2
+            az.style_layout("edit_event_layout_cells", 2, {
+                "pointer-events" : "auto",
+                "opacity" : "1"
+            })
+            az.style_layout("edit_event_layout_cells", 1, {
+                "pointer-events" : "none",
+                "opacity" : "0.5"
+            })
         }
         $(".edit_event_who_title").eq(inst - 1).parent().addClass("swoosh")
         az.animate_element("swoosh", 1, {
@@ -254,6 +270,7 @@ az.hold_value.events = {
         })
         setTimeout(function() {
             az.hold_value.events.add_event_line(user)
+            az.focus_element("event_name", 1)
         }, 1000)
     },
     add_event_line: function(user) {
@@ -395,7 +412,6 @@ az.hold_value.events = {
         var last_event_day = "NA";
         az.hold_value.fetch_results[options.user].forEach(function(obj) {
             var this_event = JSON.parse(obj.attributes.event);
-            console.log(this_event)
             // event month and year
             var this_month = this_event.date_time.split(" ")[0]
             var this_year = this_event.date_time.split(" ")[2]
