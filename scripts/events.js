@@ -378,10 +378,10 @@ az.hold_value.events = {
             "condition": "typeof(az.hold_value.fetch_results['kasandra']) !== 'undefined' && typeof(az.hold_value.fetch_results['sean']) !== 'undefined'",
             "function": function() {
                 az.hold_value.events.grab_events_from_parse_and_store_on_cell({
-                    user : "kasandra"
+                    user: "kasandra"
                 })
                 az.hold_value.events.grab_events_from_parse_and_store_on_cell({
-                    user : "sean"
+                    user: "sean"
                 })
             }
         })
@@ -390,39 +390,48 @@ az.hold_value.events = {
             az.hold_value.fetch_results['sean'] = undefined;
         }, 2000)
     },
-    grab_events_from_parse_and_store_on_cell : function(options) {
+    grab_events_from_parse_and_store_on_cell: function(options) {
         var event_arr = [];
-                az.hold_value.fetch_results[options.user].forEach(function(obj) {
-                    var this_event = JSON.parse(obj.attributes.event);
-                    // event month and year
-                    var this_month = this_event.date_time.split(" ")[0]
-                    var this_year = this_event.date_time.split(" ")[2]
-                    // currently viewed month and year
-                    var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
-                    var calendar_month = calendar_month_year[0].trim();
-                    var calendar_year = calendar_month_year[1].trim();
-                    if (this_month === calendar_month && this_year === calendar_year) {
-                        var use_instance = Number(this_event.date_time.split(" ")[1].replace(",", "")) + az.hold_value.utility.where_is_number_1_on_month()
-                        var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, {
-                            "key": "store_layout_id",
-                        })
-                        event_arr.push(this_event)
-                        if(options.user === "kasandra") {
-                        az.style_html("avatar_layout_" + target_id + "_cells", 1, {
-                            "background": "#33D9B2"
-                        })
-                    } else {
-az.style_html("avatar_layout_" + target_id + "_cells", 2, {
-                            "background": "#35ACE0"
-                        })
-                        
-                    }
-                        az.store_data("calendar_calendar_layout_cells", use_instance, {
-                            "key": "store_event_data_" + options.user,
-                            "value": JSON.stringify(event_arr)
-                        })
-                    }
+        var last_event_day = "NA";
+        az.hold_value.fetch_results[options.user].forEach(function(obj) {
+            var this_event = JSON.parse(obj.attributes.event);
+            console.log(this_event)
+            // event month and year
+            var this_month = this_event.date_time.split(" ")[0]
+            var this_year = this_event.date_time.split(" ")[2]
+            // currently viewed month and year
+            var calendar_month_year = az.grab_value("calendar_today_date", 1).split(",");
+            var calendar_month = calendar_month_year[0].trim();
+            var calendar_year = calendar_month_year[1].trim();
+            if (this_month === calendar_month && this_year === calendar_year) {
+                var use_instance = Number(this_event.date_time.split(" ")[1].replace(",", "")) + az.hold_value.utility.where_is_number_1_on_month()
+                var target_id = az.fetch_data("calendar_calendar_layout_cells", use_instance, {
+                    "key": "store_layout_id",
                 })
+                var this_event_day = Number(this_event.date_time.split(" ")[1].replace(",", "")) + az.hold_value.utility.where_is_number_1_on_month()
+                if (last_event_day === use_instance || last_event_day === "NA") {
+                    event_arr.push(this_event)
+                    last_event_day = use_instance;
+                } else {
+                    event_arr = []
+                    event_arr.push(this_event)
+                    last_event_day = use_instance;
+                }
+                if (options.user === "kasandra") {
+                    az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                        "background": "#33D9B2"
+                    })
+                } else {
+                    az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                        "background": "#35ACE0"
+                    })
+                }
+                az.store_data("calendar_calendar_layout_cells", use_instance, {
+                    "key": "store_event_data_" + options.user,
+                    "value": JSON.stringify(event_arr)
+                })
+            }
+        })
     },
     set_inner_layouts: function() {
         az.call_once_satisfied({

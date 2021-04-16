@@ -84,15 +84,15 @@ az.hold_value.utility = {
         })
         save_to_parse(event_obj, options.user)
         az.hold_value.events.add_event_line_to_scrollable(az.grab_value("event_name", 1), az.hold_value.utility.prepare_date_time(az.hold_value.utility.get_clicked_cell_date_number(), az.grab_value("pick_time", 1)), options.user);
-        if(user === "kasandra") {
-        az.style_html("avatar_layout_" + target_id + "_cells", 1, {
-            "background": "#33d9b2"
-        })
-    } else {
-        az.style_html("avatar_layout_" + target_id + "_cells", 2, {
-            "background": "#35ACE0"
-        })
-    }
+        if (options.user === "kasandra") {
+            az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                "background": "#33d9b2"
+            })
+        } else {
+            az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                "background": "#35ACE0"
+            })
+        }
         az.clear_input("event_name", 1)
         az.clear_input("pick_time", 1)
     }
