@@ -190,6 +190,18 @@ az.hold_value.events = {
                     "align": "center",
                     "cursor": "pointer"
                 })
+            
+                if(check_kasandra) {
+                    az.hold_pass_user = "kasandra"
+                } else {
+                    az.hold_pass_user = "sean"
+                }
+                az.add_event("delete_event_" + layout_id, 1, {
+            "type" : "click",
+            "function" : function(this_id) {
+                az.hold_value.events.delete_event(layout_id, az.hold_pass_user, event_obj.id)
+            }
+        })
             })
         }
         if (check_sean) {
@@ -233,6 +245,18 @@ az.hold_value.events = {
                     "align": "center",
                     "cursor": "pointer"
                 })
+                
+                if(check_kasandra) {
+                    az.hold_pass_user = "kasandra"
+                } else {
+                    az.hold_pass_user = "sean"
+                }
+                az.add_event("delete_event_" + layout_id, 1, {
+            "type" : "click",
+            "function" : function(this_id) {
+                az.hold_value.events.delete_event(layout_id, az.hold_pass_user, event_obj.id)
+            }
+        })
             })
         }
         az.all_style_text("event_title_data", {
@@ -345,6 +369,9 @@ az.hold_value.events = {
         } else {
             var inst = 2;
         }
+        var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                "key": "store_event_data_" + user
+            }))
         var layout_id = "layout_" + az.makeid();
         az.add_layout("scrollable_events", inst, {
             "this_class": "line_event_layout_" + layout_id,
@@ -381,6 +408,13 @@ az.hold_value.events = {
             "align": "center",
             "cursor": "pointer"
         })
+        az.add_event("delete_event_" + layout_id, 1, {
+            "type" : "click",
+            "function" : function(this_id) {
+                az.hold_value.events.delete_event(layout_id, user, event_obj.id)
+            }
+        })
+   
         az.all_style_text("event_title_data", {
             "text-align": "left",
             "color": "#141414",
@@ -412,6 +446,7 @@ az.hold_value.events = {
         var last_event_day = "NA";
         az.hold_value.fetch_results[options.user].forEach(function(obj) {
             var this_event = JSON.parse(obj.attributes.event);
+            this_event.id = obj.id;
             // event month and year
             var this_month = this_event.date_time.split(" ")[0]
             var this_year = this_event.date_time.split(" ")[2]
@@ -511,5 +546,34 @@ az.hold_value.events = {
                 })
             }
         })
+    },
+    delete_event : function(layout_id, user, event_id) {
+        
+
+        // fetch from cell
+        var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+            "key": "store_event_data_" + user
+        }))
+
+        // remove from cell
+        var event_arr = [];
+        event_data.forEach(function(obj) {
+            if(obj.id !== event_id) {
+                event_arr.push(obj)
+            }
+        })
+
+        // store back on cell
+        az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+            "key": "store_event_data_" + user,
+            "value": JSON.stringify(event_arr)
+        })
+       
+
+        // delete from parse
+
+
+        // remove from scrollable
+        az.remove_element("line_event_layout_" + layout_id, 1)
     }
 }
