@@ -190,18 +190,17 @@ az.hold_value.events = {
                     "align": "center",
                     "cursor": "pointer"
                 })
-            
-                if(check_kasandra) {
+                if (check_kasandra) {
                     az.hold_pass_user = "kasandra"
                 } else {
                     az.hold_pass_user = "sean"
                 }
                 az.add_event("delete_event_" + layout_id, 1, {
-            "type" : "click",
-            "function" : function(this_id) {
-                az.hold_value.events.delete_event(layout_id, az.hold_pass_user, event_obj.id)
-            }
-        })
+                    "type": "click",
+                    "function": function(this_id) {
+                        az.hold_value.events.delete_event(layout_id, az.hold_pass_user, event_obj.id)
+                    }
+                })
             })
         }
         if (check_sean) {
@@ -245,18 +244,17 @@ az.hold_value.events = {
                     "align": "center",
                     "cursor": "pointer"
                 })
-                
-                if(check_kasandra) {
+                if (check_kasandra) {
                     az.hold_pass_user = "kasandra"
                 } else {
                     az.hold_pass_user = "sean"
                 }
                 az.add_event("delete_event_" + layout_id, 1, {
-            "type" : "click",
-            "function" : function(this_id) {
-                az.hold_value.events.delete_event(layout_id, az.hold_pass_user, event_obj.id)
-            }
-        })
+                    "type": "click",
+                    "function": function(this_id) {
+                        az.hold_value.events.delete_event(layout_id, az.hold_pass_user, event_obj.id)
+                    }
+                })
             })
         }
         az.all_style_text("event_title_data", {
@@ -270,22 +268,22 @@ az.hold_value.events = {
         if (user === "kasandra") {
             var inst = 1
             az.style_layout("edit_event_layout_cells", 1, {
-                "pointer-events" : "auto",
-                "opacity" : "1"
+                "pointer-events": "auto",
+                "opacity": "1"
             })
             az.style_layout("edit_event_layout_cells", 2, {
-                "pointer-events" : "none",
-                "opacity" : "0.5"
+                "pointer-events": "none",
+                "opacity": "0.5"
             })
         } else {
             var inst = 2
             az.style_layout("edit_event_layout_cells", 2, {
-                "pointer-events" : "auto",
-                "opacity" : "1"
+                "pointer-events": "auto",
+                "opacity": "1"
             })
             az.style_layout("edit_event_layout_cells", 1, {
-                "pointer-events" : "none",
-                "opacity" : "0.5"
+                "pointer-events": "none",
+                "opacity": "0.5"
             })
         }
         $(".edit_event_who_title").eq(inst - 1).parent().addClass("swoosh")
@@ -370,8 +368,8 @@ az.hold_value.events = {
             var inst = 2;
         }
         var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-                "key": "store_event_data_" + user
-            }))
+            "key": "store_event_data_" + user
+        }))
         var layout_id = "layout_" + az.makeid();
         az.add_layout("scrollable_events", inst, {
             "this_class": "line_event_layout_" + layout_id,
@@ -409,12 +407,11 @@ az.hold_value.events = {
             "cursor": "pointer"
         })
         az.add_event("delete_event_" + layout_id, 1, {
-            "type" : "click",
-            "function" : function(this_id) {
+            "type": "click",
+            "function": function(this_id) {
                 az.hold_value.events.delete_event(layout_id, user, event_obj.id)
             }
         })
-   
         az.all_style_text("event_title_data", {
             "text-align": "left",
             "color": "#141414",
@@ -547,54 +544,39 @@ az.hold_value.events = {
             }
         })
     },
-    delete_event : function(layout_id, user, event_id) {
-        
-
+    delete_event: function(layout_id, user, event_id) {
         // fetch from cell
         var event_data = JSON.parse(az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
             "key": "store_event_data_" + user
         }))
-
         // remove from cell
         var event_arr = [];
         event_data.forEach(function(obj) {
-            if(obj.id !== event_id) {
+            if (obj.id !== event_id) {
                 event_arr.push(obj)
             }
         })
-
-        
-
-
         // store back on cell
         az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
             "key": "store_event_data_" + user,
             "value": JSON.stringify(event_arr)
         })
-
-        if(event_arr.length === 0) {
-
-        var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
-            "key": "store_layout_id",
-        })
-
-        if (user === "kasandra") {
-                    az.style_html("avatar_layout_" + target_id + "_cells", 1, {
-                        "background": "transparent"
-                    })
-                } else {
-                    az.style_html("avatar_layout_" + target_id + "_cells", 2, {
-                        "background": "transparent"
-                    })
-                }
-
+        if (event_arr.length === 0) {
+            var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+                "key": "store_layout_id",
+            })
+            if (user === "kasandra") {
+                az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                    "background": "transparent"
+                })
+            } else {
+                az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                    "background": "transparent"
+                })
             }
-       
-
+        }
         // delete from parse
-        delete_from_parse(event_id, user)
-
-
+        delete_from_parse(event_id, uaser)
         // remove from scrollable
         az.remove_element("line_event_layout_" + layout_id, 1)
     }

@@ -18,10 +18,7 @@ async function fetch_from_parse(user) {
 async function delete_from_parse(object_id, user) {
     var events_res = Parse.Object.extend(user);
     var query = new Parse.Query(events_res);
-    var res = query.equalTo("objectId", object_id)
-    res.then((obj) => {
-        obj.destroy()
-}, (error) => {
-  
-})
+    query.get(object_id).then((object) => {
+        object.destroy()
+    }, (error) => {})
 }
