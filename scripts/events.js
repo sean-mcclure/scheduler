@@ -592,6 +592,7 @@ az.hold_value.events = {
        
 
         // delete from parse
+        delete_from_parse(event_id, user)
 
 
         // remove from scrollable

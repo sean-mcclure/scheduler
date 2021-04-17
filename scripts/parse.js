@@ -15,13 +15,13 @@ async function fetch_from_parse(user) {
     const res = await query.find();
     az.hold_value.fetch_results[user] = res;
 }
-async function delete_from_parse(object_id) {
-    var events_res = Parse.Object.extend("events");
+async function delete_from_parse(object_id, user) {
+    var events_res = Parse.Object.extend(user);
     var query = new Parse.Query(events_res);
-    query.get(object_id, {
-        success: function(obj) {
-            obj.destroy({});
-        },
-        error: function(object, error) {}
-    });
+    var res = query.equalTo("objectId", object_id)
+    res.then((obj) => {
+        obj.destroy()
+}, (error) => {
+  
+})
 }
