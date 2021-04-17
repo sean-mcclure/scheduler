@@ -563,11 +563,32 @@ az.hold_value.events = {
             }
         })
 
+        
+
+
         // store back on cell
         az.store_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
             "key": "store_event_data_" + user,
             "value": JSON.stringify(event_arr)
         })
+
+        if(event_arr.length === 0) {
+
+        var target_id = az.fetch_data("calendar_calendar_layout_cells", az.get_target_instance(az.hold_value.clicked_cell_id), {
+            "key": "store_layout_id",
+        })
+
+        if (user === "kasandra") {
+                    az.style_html("avatar_layout_" + target_id + "_cells", 1, {
+                        "background": "transparent"
+                    })
+                } else {
+                    az.style_html("avatar_layout_" + target_id + "_cells", 2, {
+                        "background": "transparent"
+                    })
+                }
+
+            }
        
 
         // delete from parse
