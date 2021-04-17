@@ -576,7 +576,7 @@ az.hold_value.events = {
             }
         }
         // delete from parse
-        delete_from_parse(event_id, uaser)
+        delete_from_parse(event_id, user)
         // remove from scrollable
         az.remove_element("line_event_layout_" + layout_id, 1)
     }
