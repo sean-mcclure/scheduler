@@ -1293,10 +1293,13 @@ az.components.utility.fill_calendar = function(options, month, year) {
                     })
                     }
                     if (options.hasOwnProperty("on_click_cell")) {
-                        az.add_event(options.this_class + "_calendar_layout_cells", index + 1, {
+                        az.add_event(options.this_class + "_calendar_layout_cells", az.components.utility.where_is_number_1_on_month() + (index+1), {
                             "type": "click",
                             "function": function(this_id) {
-                                az.call_callback(options.on_click_cell(this_id))
+                                var max_clickable = Object.values(days_per_month)[az.components.utility.months.indexOf(month)]
+                                if(index < max_clickable) {
+                                    az.call_callback(options.on_click_cell(this_id))
+                                }
                             }
                         })
                     }
@@ -1373,6 +1376,15 @@ az.components.utility.fill_calendar = function(options, month, year) {
         }
     })
 }
+ az.components.utility.where_is_number_1_on_month = function() {
+        var res;
+        $(".calendar_calendar_layout_cells").each(function(i) {
+            if ($(this).text() === "1") {
+                res = i;
+            }
+        })
+        return (res)
+    }
 az.components.utility.instance_of_first_day = function() {
     var res = 0;    
     $(".calendar_calendar_layout_cells").each(function(i) {
